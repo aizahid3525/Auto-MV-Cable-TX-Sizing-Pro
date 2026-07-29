@@ -486,6 +486,20 @@ if gitattributes_path.exists():
     check("*.dart text eol=lf" in gitattributes,
           "Dart LF line-ending contract missing")
 
+# Deterministic widget-test contract.
+widget_test_path = ROOT / "test" / "widget_test.dart"
+check(widget_test_path.exists(), "Dashboard widget test missing")
+if widget_test_path.exists():
+    widget_test = widget_test_path.read_text(encoding="utf-8")
+    check(re.search(r"\btester\.pumpAndSettle\s*\(", widget_test) is None,
+          "Dashboard widget test must not use unbounded pumpAndSettle")
+    check("tester.runAsync" in widget_test,
+          "Dashboard widget test must load controlled assets with tester.runAsync")
+    check("EngineeringRepository.instance.load" in widget_test,
+          "Dashboard widget test must preload the controlled repository")
+    check("tester.pump(const Duration(milliseconds: 100))" in widget_test,
+          "Dashboard widget test must use bounded deterministic pumping")
+
 # Workflow and docs contracts.
 for workflow in [".github/workflows/android.yml", ".github/workflows/windows.yml"]:
     text = (ROOT / workflow).read_text(encoding="utf-8")

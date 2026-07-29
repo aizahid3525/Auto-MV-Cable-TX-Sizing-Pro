@@ -80,3 +80,7 @@ The packaging environment did not contain the Flutter or Dart SDK. Therefore, th
 - Windows release compilation
 
 The included GitHub Actions run those native checks and produce Android and Windows artifacts. Production Android publication additionally requires the protected upload keystore and signing secrets.
+
+## Widget-test timeout hotfix
+
+The dashboard smoke test no longer uses `pumpAndSettle()`. Controlled assets are preloaded through `tester.runAsync`, followed by bounded deterministic frame pumps. This prevents continuously animated loading indicators from causing Android and Windows CI timeouts while retaining verification of asset loading and dashboard rendering.
