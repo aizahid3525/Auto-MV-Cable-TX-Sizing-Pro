@@ -3,89 +3,126 @@ import 'package:flutter/material.dart';
 class AppTheme {
   const AppTheme._();
 
-  static const Color fuchsia = Color(0xFFC2185B);
-  static const Color fuchsiaBright = Color(0xFFE91E63);
-  static const Color fuchsiaDark = Color(0xFF880E4F);
+  static const Color navy = Color(0xFF173278);
+  static const Color blue = Color(0xFF2457E6);
+  static const Color cyan = Color(0xFF11C5D9);
+  static const Color cyanDark = Color(0xFF087F99);
+  static const Color teal = Color(0xFF0F766E);
+
+  // Backward-compatible aliases retained for existing engineering widgets.
+  static const Color fuchsia = blue;
+  static const Color fuchsiaBright = cyan;
+  static const Color fuchsiaDark = navy;
 
   static ThemeData light() {
     final scheme = ColorScheme.fromSeed(
-      seedColor: fuchsia,
+      seedColor: blue,
       brightness: Brightness.light,
-      surface: const Color(0xFFFFF8FB),
+      surface: Colors.white,
+    ).copyWith(
+      primary: blue,
+      secondary: cyanDark,
+      tertiary: teal,
+      surface: Colors.white,
+      surfaceContainerLowest: const Color(0xFFF8FAFD),
+      surfaceContainerLow: const Color(0xFFF1F5F9),
+      outlineVariant: const Color(0xFFDDE5EF),
     );
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: scheme,
-      scaffoldBackgroundColor: const Color(0xFFFFF8FB),
-      cardTheme: const CardThemeData(
-        elevation: 0,
-        margin: EdgeInsets.zero,
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: scheme.outlineVariant),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: scheme.outlineVariant),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: fuchsia, width: 2),
-        ),
-      ),
-      navigationRailTheme: const NavigationRailThemeData(
-        indicatorColor: Color(0xFFF8DCE8),
-        selectedIconTheme: IconThemeData(color: fuchsiaDark),
-        selectedLabelTextStyle: TextStyle(
-          color: fuchsiaDark,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    );
+    return _theme(scheme, const Color(0xFFF4F7FB));
   }
 
   static ThemeData dark() {
     final scheme = ColorScheme.fromSeed(
-      seedColor: fuchsiaBright,
+      seedColor: cyan,
       brightness: Brightness.dark,
-      surface: const Color(0xFF211820),
+      surface: const Color(0xFF0F172A),
+    ).copyWith(
+      primary: const Color(0xFF60A5FA),
+      secondary: const Color(0xFF22D3EE),
+      tertiary: const Color(0xFF5EEAD4),
+      surface: const Color(0xFF0F172A),
+      surfaceContainerLowest: const Color(0xFF111B2E),
+      surfaceContainerLow: const Color(0xFF172033),
+      outlineVariant: const Color(0xFF334155),
     );
+    return _theme(scheme, const Color(0xFF07111F));
+  }
+
+  static ThemeData _theme(ColorScheme scheme, Color scaffold) {
+    final isDark = scheme.brightness == Brightness.dark;
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
-      scaffoldBackgroundColor: const Color(0xFF151014),
-      cardTheme: const CardThemeData(
+      scaffoldBackgroundColor: scaffold,
+      appBarTheme: AppBarTheme(
+        backgroundColor: scaffold,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        foregroundColor: scheme.onSurface,
+        centerTitle: false,
+      ),
+      cardTheme: CardThemeData(
         elevation: 0,
         margin: EdgeInsets.zero,
+        color: scheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(26),
+          side: BorderSide(color: scheme.outlineVariant),
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(0xFF211820),
+        fillColor: scheme.surface,
+        isDense: true,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
+        labelStyle: TextStyle(
+          color: scheme.onSurfaceVariant,
+          fontWeight: FontWeight.w700,
+        ),
+        suffixStyle: TextStyle(
+          color: scheme.onSurfaceVariant,
+          fontWeight: FontWeight.w800,
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(18),
           borderSide: BorderSide(color: scheme.outlineVariant),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(18),
           borderSide: BorderSide(color: scheme.outlineVariant),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: fuchsiaBright, width: 2),
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide(
+            color: isDark ? const Color(0xFF22D3EE) : cyanDark,
+            width: 1.8,
+          ),
         ),
       ),
-      navigationRailTheme: const NavigationRailThemeData(
-        indicatorColor: Color(0xFF4A1830),
-        selectedIconTheme: IconThemeData(color: Color(0xFFFF78AA)),
+      navigationBarTheme: NavigationBarThemeData(
+        height: 74,
+        backgroundColor: scheme.surface,
+        indicatorColor: isDark ? const Color(0xFF164E63) : const Color(0xFFDBEAFE),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          return TextStyle(
+            fontWeight: states.contains(WidgetState.selected)
+                ? FontWeight.w900
+                : FontWeight.w700,
+            color: scheme.onSurface,
+          );
+        }),
+      ),
+      navigationRailTheme: NavigationRailThemeData(
+        backgroundColor: scheme.surface,
+        indicatorColor: isDark ? const Color(0xFF164E63) : const Color(0xFFDBEAFE),
+        selectedIconTheme: IconThemeData(color: scheme.primary),
         selectedLabelTextStyle: TextStyle(
-          color: Color(0xFFFF9DBF),
-          fontWeight: FontWeight.w700,
+          color: scheme.primary,
+          fontWeight: FontWeight.w900,
         ),
       ),
+      dividerTheme: DividerThemeData(color: scheme.outlineVariant),
     );
   }
 }

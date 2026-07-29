@@ -424,19 +424,9 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
   }
 
   Widget _fieldGrid(List<Widget> children) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final count = constraints.maxWidth >= 640 ? 2 : 1;
-        return GridView.count(
-          crossAxisCount: count,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          childAspectRatio: count == 1 ? 3.1 : 2.5,
-          children: children,
-        );
-      },
+    return ResponsiveGrid(
+      minItemWidth: 145,
+      children: children,
     );
   }
 

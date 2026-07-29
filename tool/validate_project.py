@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent fail-closed validation for the controlled Rev2 package."""
+"""Independent fail-closed validation for the controlled Rev2 engineering data and Rev3 modern UI package."""
 
 from __future__ import annotations
 
@@ -208,7 +208,7 @@ def balanced_dart(path: Path) -> bool:
 pubspec_path = ROOT / "pubspec.yaml"
 pubspec = pubspec_path.read_text(encoding="utf-8")
 check("name: auto_mv_cable_tx_sizing_pro" in pubspec, "Incorrect Flutter project name")
-check("version: 1.1.0+2" in pubspec, "Incorrect Rev2 app version")
+check("version: 1.1.0+3" in pubspec, "Incorrect modern UI build version")
 for asset in [
     "mv_cable_database.json",
     "transformer_database.json",
@@ -359,8 +359,54 @@ for dart_path in sorted([*ROOT.glob("lib/**/*.dart"), *ROOT.glob("test/**/*.dart
 
 main_text = (ROOT / "lib/main.dart").read_text(encoding="utf-8")
 check("ProtectionDesignScreen" in main_text, "Protection page not routed")
-check("NavigationDestinationLabelBehavior.onlyShowSelected" in main_text,
-      "Compact mobile navigation label safeguard missing")
+check("NavigationDestinationLabelBehavior.alwaysShow" in main_text,
+      "Four-destination labelled mobile navigation contract missing")
+for term in [
+    "_AppNavigationDrawer",
+    "_bottomPageIndices = <int>[0, 1, 2, 5]",
+    "DashboardDatabaseFilter",
+    "DatabaseFilterTransfer",
+    "Open navigation menu",
+]:
+    check(term in main_text, f"Modern navigation contract missing {term}")
+
+dashboard_text = (ROOT / "lib/screens/dashboard_screen.dart").read_text(encoding="utf-8")
+for term in [
+    "Interactive radial chart",
+    "MV cable family",
+    "Transformer family",
+    "_CoveragePainter",
+    "_coverageIndexFromPosition",
+    "View ${selected.value} records",
+    "Engineering Database & Reference",
+]:
+    check(term in dashboard_text, f"Modern radial dashboard contract missing {term}")
+
+common_widgets_text = (ROOT / "lib/widgets/common_widgets.dart").read_text(encoding="utf-8")
+for term in [
+    "Input fields use [information] = false",
+    "Result/output card",
+    "final breakpoint = requestedWidth.clamp(220.0, 252.0).toDouble()",
+    "if (!hasPair)",
+    "SizedBox(width: double.infinity, child: children[index])",
+]:
+    check(term in common_widgets_text, f"Responsive/helper UI contract missing {term}")
+labeled_field_block = common_widgets_text.split("class LabeledField", 1)[1].split("class ResultTile", 1)[0]
+check("information: true" not in labeled_field_block,
+      "Input LabeledField must not show an information icon")
+result_tile_block = common_widgets_text.split("class ResultTile", 1)[1].split("class ResponsiveGrid", 1)[0]
+check("Icons.info_outline_rounded" in result_tile_block,
+      "ResultTile information icon is missing")
+
+database_text = (ROOT / "lib/screens/database_screen.dart").read_text(encoding="utf-8")
+for term in [
+    "class DatabaseFilterTransfer",
+    "_cableFamily = transfer.label",
+    "_txType = transfer.label",
+    "ResponsiveGrid(",
+    "Record information",
+]:
+    check(term in database_text, f"Database radial-transfer/UI contract missing {term}")
 
 repo_text = (ROOT / "lib/data_repository.dart").read_text(encoding="utf-8")
 for term in ["protection_database.json", "ProtectionProfileRecord", "ctRatios",
@@ -596,18 +642,18 @@ for workflow in [".github/workflows/android.yml", ".github/workflows/windows.yml
         check(term in text, f"Workflow {workflow} missing {term}")
 
 readme = (ROOT / "README.md").read_text(encoding="utf-8")
-for term in ["1.1.0+2", "MVTX-PROTECTION-V1", "Professional manual",
+for term in ["1.1.0+3", "MVTX-PROTECTION-V1", "Professional manual",
              "315 protection and switchgear records", "does **not** claim final selectivity"]:
     check(term in readme, f"README contract missing {term}")
 
 if errors:
-    print(f"STATIC REV2 VALIDATION: FAIL — {checks} checks, {len(errors)} errors")
+    print(f"STATIC REV3 UI VALIDATION: FAIL — {checks} checks, {len(errors)} errors")
     for error in errors:
         print(f" - {error}")
     sys.exit(1)
 
 print(
-    f"STATIC REV2 VALIDATION: PASS — {checks} checks; "
+    f"STATIC REV3 UI VALIDATION: PASS — {checks} checks; "
     "identity, controlled data, protection envelopes, fail-closed safeguards, "
     "UI/report integration, workbook integrity and analytical regressions verified."
 )

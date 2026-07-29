@@ -219,14 +219,9 @@ class _CoordinatedDesignScreenState extends State<CoordinatedDesignScreen> {
               icon: const Icon(Icons.auto_awesome),
               label: const Text('Recalculate'),
             ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final count = constraints.maxWidth >= 900
-                    ? 4
-                    : constraints.maxWidth >= 520
-                        ? 2
-                        : 1;
-                final children = [
+            child: ResponsiveGrid(
+              minItemWidth: 145,
+              children: [
                   LabeledField(
                     label: 'MV system voltage',
                     topicId: 'system_voltage',
@@ -322,17 +317,7 @@ class _CoordinatedDesignScreenState extends State<CoordinatedDesignScreen> {
                       },
                     ),
                   ),
-                ];
-                return GridView.count(
-                  crossAxisCount: count,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  childAspectRatio: count == 1 ? 3 : 2.35,
-                  children: children,
-                );
-              },
+              ],
             ),
           ),
           const SizedBox(height: 16),

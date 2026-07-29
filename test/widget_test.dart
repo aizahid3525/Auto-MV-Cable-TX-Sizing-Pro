@@ -23,5 +23,8 @@ void main() {
     expect(find.text('MV Cable Design'), findsOneWidget);
     expect(find.text('Transformer Design'), findsOneWidget);
     expect(find.text('Protection & Switchgear'), findsOneWidget);
+    expect(find.text('Interactive radial chart'), findsOneWidget);
+    expect(find.text('Engineering Database & Reference'), findsOneWidget);
+    expect(find.byTooltip('Open navigation menu'), findsOneWidget);
   });
 }

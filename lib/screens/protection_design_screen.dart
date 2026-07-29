@@ -683,23 +683,9 @@ class _ProtectionDesignScreenState extends State<ProtectionDesignScreen> {
   }
 
   Widget _fieldGrid(List<Widget> children) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final count = constraints.maxWidth >= 1040
-            ? 3
-            : constraints.maxWidth >= 620
-                ? 2
-                : 1;
-        return GridView.count(
-          crossAxisCount: count,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          childAspectRatio: count == 1 ? 3.0 : 2.25,
-          children: children,
-        );
-      },
+    return ResponsiveGrid(
+      minItemWidth: 145,
+      children: children,
     );
   }
 

@@ -1,6 +1,6 @@
 # Auto MV Cable & TX Sizing Pro
 
-> Rev2 hotfix: ListTile Material ancestry corrected for deterministic Android and Windows widget tests.
+> Modern UI build: radial MV cable/transformer coverage, responsive two-column cards, corrected helper-icon semantics and a complete navigation drawer.
 
 **Android and Windows Flutter engineering design aid** for MV cables,
 transformers, coordinated feeder design, and preliminary transformer
@@ -8,11 +8,24 @@ protection/switchgear selection.
 
 - App name: **Auto MV Cable & TX Sizing Pro**
 - Package ID: `com.aizahid.auto_mv_cable_tx_sizing_pro`
-- Version: `1.1.0+2`
+- Version: `1.1.0+3`
 - Calculation engine: `MVTX-CALC-V1`
 - Protection engine: `MVTX-PROTECTION-V1`
 - Brand: **AiZahid**
-- Theme: **Fuchsia**, with responsive light and dark modes
+- Theme: **Navy / blue / cyan**, with persistent responsive light and dark modes
+
+
+## Modern UI and navigation update
+
+- Dashboard redesigned using the latest Auto Cable Sizing Pro interaction pattern.
+- Interactive concentric radial chart: outer ring for MV cable families and inner ring for transformer families.
+- Tappable segments, centre-cycle control, selected-family summary and filtered database transfer.
+- Full navigation drawer for all seven workflows, theme control, About and FAQ.
+- Four primary bottom destinations: Dashboard, MV Cable, Transformer and Database.
+- Responsive two-column card system across input and result grids.
+- Height-matched paired cards; an unpaired final card spans the complete two-column width.
+- Input guidance uses the question-mark icon only. Calculated and database-derived outputs use the information icon.
+- Engineering databases and formulas remain unchanged by this UI-only revision.
 
 ## Included engineering workflows
 
