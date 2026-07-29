@@ -15,3 +15,6 @@ android/key.properties
 windows/flutter/ephemeral/
 macos/Flutter/ephemeral/
 linux/flutter/ephemeral/
+# Python cache files
+__pycache__/
+*.py[cod]
