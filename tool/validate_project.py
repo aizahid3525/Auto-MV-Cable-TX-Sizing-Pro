@@ -45,6 +45,22 @@ def next_standard(values: list[float], required: float) -> float:
     return math.nan
 
 
+def canonical_text_sha256(path: Path) -> str:
+    """Hash UTF-8 controlled text with platform-neutral line endings.
+
+    Git may materialise text as LF or CRLF depending on checkout settings.
+    The engineering content is identical, so the manifest comparison
+    canonicalises CRLF and legacy CR to LF before calculating SHA-256.
+    """
+    raw = path.read_bytes()
+    try:
+        raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return hashlib.sha256(raw).hexdigest()
+    canonical = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(canonical).hexdigest()
+
+
 def png_rgba_alpha_min(path: Path) -> tuple[bool, int]:
     """Return whether a PNG is 8-bit RGBA and its minimum alpha value.
 
@@ -308,7 +324,7 @@ for path in sorted(DATA.glob("*.json")):
     row = manifest_rows.get(path.name)
     check(row is not None, f"Manifest missing {path.name}")
     if row:
-        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        actual = canonical_text_sha256(path)
         check(row.get("SHA-256") == actual, f"SHA-256 mismatch for {path.name}")
 
 # Icon transparency (standard-library PNG inspection; no Pillow dependency).
@@ -420,10 +436,26 @@ if master.exists():
             ]:
                 check(sheet in sheet_names, f"Workbook missing sheet {sheet}")
 
+# Cross-platform Git line-ending contract.
+gitattributes_path = ROOT / ".gitattributes"
+check(gitattributes_path.exists(), ".gitattributes is missing")
+if gitattributes_path.exists():
+    gitattributes = gitattributes_path.read_text(encoding="utf-8")
+    check("*.json text eol=lf" in gitattributes,
+          "JSON LF line-ending contract missing")
+    check("*.dart text eol=lf" in gitattributes,
+          "Dart LF line-ending contract missing")
+
 # Workflow and docs contracts.
 for workflow in [".github/workflows/android.yml", ".github/workflows/windows.yml"]:
     text = (ROOT / workflow).read_text(encoding="utf-8")
-    for term in ["python tool/validate_project.py", "flutter analyze", "flutter test"]:
+    for term in [
+        "python tool/validate_project.py",
+        "dart format lib test",
+        "dart format --output=none --set-exit-if-changed lib test",
+        "flutter analyze",
+        "flutter test",
+    ]:
         check(term in text, f"Workflow {workflow} missing {term}")
 
 readme = (ROOT / "README.md").read_text(encoding="utf-8")

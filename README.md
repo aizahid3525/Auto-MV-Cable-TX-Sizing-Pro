@@ -140,3 +140,12 @@ transparency, Dart source contracts and analytical regression vectors.
 
 Native Flutter analyser, test and build results must be taken from the supplied
 GitHub Actions workflows or another environment with the Flutter SDK.
+
+
+## Rev2 cross-platform CI hotfix
+
+- Controlled JSON SHA-256 verification canonicalises LF/CRLF line endings.
+- `.gitattributes` enforces LF for JSON, Dart, Python, YAML and other text assets.
+- Windows CI disables automatic CRLF conversion before checkout.
+- Android and Windows CI run `dart format lib test` before the strict idempotence check.
+- The formatter remains a gate: the second formatter command must report no further changes.
