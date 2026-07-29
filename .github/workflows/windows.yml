@@ -63,7 +63,7 @@ jobs:
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Auto-MV-Cable-TX-Sizing-Pro-Rev2-Windows
+          name: Auto-MV-Cable-TX-Sizing-Pro-Rev3-Windows
           path: |
             build/Auto_MV_Cable_TX_Sizing_Pro_Windows_Portable.zip
             build/symbols/windows
