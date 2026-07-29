@@ -1,4 +1,4 @@
-name: Validate and Build Windows
+name: Validate and Build Windows + MSIX
 
 on:
   workflow_dispatch:
@@ -9,7 +9,10 @@ on:
 jobs:
   windows:
     runs-on: windows-latest
-    timeout-minutes: 50
+    timeout-minutes: 60
+    env:
+      WINDOWS_PFX_BASE64: ${{ secrets.WINDOWS_PFX_BASE64 }}
+      WINDOWS_PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
     steps:
       - name: Configure Git line endings
         shell: pwsh
@@ -28,7 +31,7 @@ jobs:
       - name: Generate Windows platform wrapper
         run: flutter create --platforms=windows --org com.aizahid --project-name auto_mv_cable_tx_sizing_pro .
 
-      - name: Configure app identity
+      - name: Configure app and Store identities
         run: python tool/configure_platforms.py
 
       - name: Resolve dependencies
@@ -60,11 +63,63 @@ jobs:
         run: |
           Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath build/Auto_MV_Cable_TX_Sizing_Pro_Windows_Portable.zip -Force
 
-      - name: Upload Windows artifact
+      - name: Stage Microsoft Store MSIX contents
+        shell: pwsh
+        run: |
+          $stage = "build/msix-stage"
+          Remove-Item $stage -Recurse -Force -ErrorAction SilentlyContinue
+          New-Item -ItemType Directory -Path $stage | Out-Null
+          Copy-Item "build/windows/x64/runner/Release/*" $stage -Recurse -Force
+          Copy-Item "Package.appxmanifest" "$stage/AppxManifest.xml" -Force
+          Copy-Item "windows/packaging/Assets" "$stage/Assets" -Recurse -Force
+
+      - name: Create Microsoft Store MSIX
+        shell: pwsh
+        run: |
+          $makeAppx = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\makeappx.exe" |
+            Sort-Object FullName |
+            Select-Object -Last 1
+          if (-not $makeAppx) { throw "makeappx.exe was not found in the Windows SDK." }
+          & $makeAppx.FullName pack /d "build/msix-stage" /p "build/Auto_MV_Cable_TX_Sizing_Pro_1.1.0.0_x64.msix" /o
+          if ($LASTEXITCODE -ne 0) { throw "MakeAppx failed with exit code $LASTEXITCODE" }
+
+      - name: Optionally sign MSIX with GitHub secrets
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:WINDOWS_PFX_BASE64)) {
+            Write-Host "WINDOWS_PFX_BASE64 is not configured. The Store package remains unsigned for Partner Center processing."
+            exit 0
+          }
+          if ([string]::IsNullOrWhiteSpace($env:WINDOWS_PFX_PASSWORD)) {
+            throw "WINDOWS_PFX_PASSWORD is required when WINDOWS_PFX_BASE64 is configured."
+          }
+          $pfxPath = Join-Path $env:RUNNER_TEMP "aizahid-store-signing.pfx"
+          [IO.File]::WriteAllBytes($pfxPath, [Convert]::FromBase64String($env:WINDOWS_PFX_BASE64))
+          $signTool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" |
+            Sort-Object FullName |
+            Select-Object -Last 1
+          if (-not $signTool) { throw "signtool.exe was not found in the Windows SDK." }
+          & $signTool.FullName sign /fd SHA256 /f $pfxPath /p $env:WINDOWS_PFX_PASSWORD "build/Auto_MV_Cable_TX_Sizing_Pro_1.1.0.0_x64.msix"
+          if ($LASTEXITCODE -ne 0) { throw "SignTool failed with exit code $LASTEXITCODE" }
+          Remove-Item $pfxPath -Force
+
+      - name: Verify packaged Store identity
+        shell: pwsh
+        run: |
+          [xml]$manifest = Get-Content "Package.appxmanifest"
+          $identity = $manifest.Package.Identity
+          if ($identity.Name -ne "AiZahid.AutoMVCableTXSizingPro") { throw "Incorrect Store identity name." }
+          if ($identity.Publisher -ne "CN=A0E77901-C4C9-4DDA-9126-02F6FC3FDA15") { throw "Incorrect Store publisher." }
+          if ($manifest.Package.Properties.PublisherDisplayName -ne "AiZahid") { throw "Incorrect publisher display name." }
+          if ($identity.Version -ne "1.1.0.0") { throw "Incorrect Store version." }
+
+      - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Auto-MV-Cable-TX-Sizing-Pro-Rev3-Windows
+          name: Auto-MV-Cable-TX-Sizing-Pro-Rev4-Windows-MSIX
           path: |
             build/Auto_MV_Cable_TX_Sizing_Pro_Windows_Portable.zip
+            build/Auto_MV_Cable_TX_Sizing_Pro_1.1.0.0_x64.msix
             build/symbols/windows
+            Package.appxmanifest
           if-no-files-found: error
