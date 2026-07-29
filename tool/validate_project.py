@@ -7,12 +7,13 @@ import hashlib
 import json
 import math
 import re
+import struct
 import sys
 import zipfile
+import zlib
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
-from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "assets" / "data"
@@ -42,6 +43,101 @@ def next_standard(values: list[float], required: float) -> float:
         if value + 1e-9 >= required:
             return value
     return math.nan
+
+
+def png_rgba_alpha_min(path: Path) -> tuple[bool, int]:
+    """Return whether a PNG is 8-bit RGBA and its minimum alpha value.
+
+    This intentionally uses only the Python standard library so GitHub Actions
+    and local validation do not depend on Pillow/PIL being preinstalled.
+    """
+    signature = b"\x89PNG\r\n\x1a\n"
+    raw = path.read_bytes()
+    if not raw.startswith(signature):
+        return False, 255
+
+    offset = len(signature)
+    width = height = bit_depth = color_type = interlace = None
+    idat = bytearray()
+    while offset + 12 <= len(raw):
+        length = struct.unpack(">I", raw[offset : offset + 4])[0]
+        chunk_type = raw[offset + 4 : offset + 8]
+        data_start = offset + 8
+        data_end = data_start + length
+        if data_end + 4 > len(raw):
+            return False, 255
+        chunk_data = raw[data_start:data_end]
+        if chunk_type == b"IHDR":
+            if length != 13:
+                return False, 255
+            width, height, bit_depth, color_type, _, _, interlace = struct.unpack(
+                ">IIBBBBB", chunk_data
+            )
+        elif chunk_type == b"IDAT":
+            idat.extend(chunk_data)
+        elif chunk_type == b"IEND":
+            break
+        offset = data_end + 4
+
+    if not width or not height or bit_depth != 8 or color_type != 6 or interlace != 0:
+        return False, 255
+
+    try:
+        scanlines = zlib.decompress(bytes(idat))
+    except zlib.error:
+        return False, 255
+
+    bytes_per_pixel = 4
+    stride = width * bytes_per_pixel
+    expected = height * (stride + 1)
+    if len(scanlines) != expected:
+        return False, 255
+
+    previous = bytearray(stride)
+    alpha_min = 255
+    cursor = 0
+
+    def paeth(a: int, b: int, c: int) -> int:
+        estimate = a + b - c
+        pa = abs(estimate - a)
+        pb = abs(estimate - b)
+        pc = abs(estimate - c)
+        if pa <= pb and pa <= pc:
+            return a
+        if pb <= pc:
+            return b
+        return c
+
+    for _ in range(height):
+        filter_type = scanlines[cursor]
+        cursor += 1
+        encoded = scanlines[cursor : cursor + stride]
+        cursor += stride
+        decoded = bytearray(stride)
+        for index, value in enumerate(encoded):
+            left = decoded[index - bytes_per_pixel] if index >= bytes_per_pixel else 0
+            up = previous[index]
+            up_left = previous[index - bytes_per_pixel] if index >= bytes_per_pixel else 0
+            if filter_type == 0:
+                reconstructed = value
+            elif filter_type == 1:
+                reconstructed = (value + left) & 0xFF
+            elif filter_type == 2:
+                reconstructed = (value + up) & 0xFF
+            elif filter_type == 3:
+                reconstructed = (value + ((left + up) // 2)) & 0xFF
+            elif filter_type == 4:
+                reconstructed = (value + paeth(left, up, up_left)) & 0xFF
+            else:
+                return False, 255
+            decoded[index] = reconstructed
+        for alpha_index in range(3, stride, bytes_per_pixel):
+            alpha_min = min(alpha_min, decoded[alpha_index])
+            if alpha_min == 0:
+                break
+        previous = decoded
+
+    return True, alpha_min
 
 
 def balanced_dart(path: Path) -> bool:
@@ -215,14 +311,14 @@ for path in sorted(DATA.glob("*.json")):
         actual = hashlib.sha256(path.read_bytes()).hexdigest()
         check(row.get("SHA-256") == actual, f"SHA-256 mismatch for {path.name}")
 
-# Icon transparency.
+# Icon transparency (standard-library PNG inspection; no Pillow dependency).
 for icon_name in ["app_icon_512.png", "app_icon_1024.png", "adaptive_foreground.png"]:
     icon_path = ROOT / "assets" / "icons" / icon_name
     check(icon_path.exists(), f"Missing icon {icon_name}")
-    icon = Image.open(icon_path)
-    check(icon.mode == "RGBA", f"Icon is not RGBA: {icon_name}")
-    check(icon.getchannel("A").getextrema()[0] == 0,
-          f"Icon lacks transparent outer pixels: {icon_name}")
+    if icon_path.exists():
+        is_rgba, alpha_min = png_rgba_alpha_min(icon_path)
+        check(is_rgba, f"Icon is not a supported 8-bit non-interlaced RGBA PNG: {icon_name}")
+        check(alpha_min == 0, f"Icon lacks fully transparent outer pixels: {icon_name}")
 
 # Source and UI contracts.
 required_dart = [
