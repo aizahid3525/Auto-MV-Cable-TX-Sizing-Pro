@@ -114,7 +114,9 @@ class EngineeringCalculations {
   const EngineeringCalculations._();
 
   static double designCurrentA({required double kva, required double kv}) {
-    if (kva <= 0 || kv <= 0) return double.nan;
+    if (kva <= 0 || kv <= 0) {
+      return double.nan;
+    }
     return kva / (math.sqrt(3) * kv);
   }
 
@@ -186,9 +188,15 @@ class EngineeringCalculations {
     final vdPass = voltageDropPercent <= input.voltageDropLimitPercent;
     final faultPass = input.faultCurrentKa <= withstandKa;
 
-    if (!ampacityPass) messages.add('Derated ampacity is below the design current.');
-    if (!vdPass) messages.add('Voltage drop exceeds the selected project limit.');
-    if (!faultPass) messages.add('Conductor short-circuit withstand is insufficient.');
+    if (!ampacityPass) {
+      messages.add('Derated ampacity is below the design current.');
+    }
+    if (!vdPass) {
+      messages.add('Voltage drop exceeds the selected project limit.');
+    }
+    if (!faultPass) {
+      messages.add('Conductor short-circuit withstand is insufficient.');
+    }
     if (input.screenBonding == 'Not selected') {
       messages.add('Select and verify the MV screen-bonding arrangement.');
     }
@@ -288,7 +296,9 @@ class EngineeringCalculations {
     final sinPhi = math.sqrt(math.max(0, 1 - input.powerFactor * input.powerFactor));
     final regulation = resistancePercent * input.powerFactor + reactancePercent * sinPhi;
 
-    if (normalLoading > 100) messages.add('Selected installed capacity is below the design demand.');
+    if (normalLoading > 100) {
+      messages.add('Selected installed capacity is below the design demand.');
+    }
     if (normalLoading > 90 && normalLoading <= 100) {
       messages.add('Normal loading exceeds the preferred 90% preliminary threshold.');
     }

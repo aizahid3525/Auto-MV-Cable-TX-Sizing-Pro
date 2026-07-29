@@ -316,7 +316,9 @@ class ProtectionCalculations {
   static double _next(List<double> values, double required) {
     final sorted = values.where((value) => value > 0).toSet().toList()..sort();
     for (final value in sorted) {
-      if (value + 1e-9 >= required) return value;
+      if (value + 1e-9 >= required) {
+        return value;
+      }
     }
     return double.nan;
   }

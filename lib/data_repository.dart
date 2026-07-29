@@ -34,7 +34,9 @@ class EngineeringRepository {
       protectionProfiles.isNotEmpty;
 
   Future<void> load() async {
-    if (isLoaded) return;
+    if (isLoaded) {
+      return;
+    }
     final results = await Future.wait<String>([
       rootBundle.loadString('assets/data/mv_cable_database.json'),
       rootBundle.loadString('assets/data/transformer_database.json'),
@@ -94,7 +96,9 @@ class EngineeringRepository {
 
   HelpTopic? help(String id) {
     for (final topic in helpTopics) {
-      if (topic.id == id) return topic;
+      if (topic.id == id) {
+        return topic;
+      }
     }
     return null;
   }
@@ -112,7 +116,9 @@ class EngineeringRepository {
 
   ProtectionProfileRecord protectionProfile(String id) {
     for (final profile in protectionProfiles) {
-      if (profile.id == id) return profile;
+      if (profile.id == id) {
+        return profile;
+      }
     }
     return protectionProfiles.first;
   }
@@ -122,7 +128,9 @@ class EngineeringRepository {
       .toList(growable: false);
 
   List<double> _numberList(dynamic source) {
-    if (source is! List<dynamic>) return const [];
+    if (source is! List<dynamic>) {
+      return const [];
+    }
     return source.whereType<num>().map((value) => value.toDouble()).toList();
   }
 

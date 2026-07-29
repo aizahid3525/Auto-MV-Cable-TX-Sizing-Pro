@@ -37,7 +37,12 @@ class StandardsScreen extends StatelessWidget {
                         ? null
                         : () async {
                             final uri = Uri.tryParse(standard.url);
-                            if (uri != null) await launchUrl(uri, mode: LaunchMode.externalApplication);
+                            if (uri != null) {
+                              await launchUrl(
+                                uri,
+                                mode: LaunchMode.externalApplication,
+                              );
+                            }
                           },
                   ),
                 );
@@ -64,9 +69,9 @@ class StandardsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const SectionCard(
-            title: 'About this Rev1 package',
+            title: 'About this Rev2 package',
             child: Text(
-              'Auto MV Cable & TX Sizing Pro V1.0.0+1 • MVTX-CALC-V1 • Developed under the AiZahid engineering-app family. The Excel engineering master, JSON databases and Flutter source are revision controlled together.',
+              'Auto MV Cable & TX Sizing Pro V1.1.0+2 • MVTX-CALC-V1 + MVTX-PROTECTION-V1 • Developed under the AiZahid engineering-app family. The Excel engineering master, JSON databases and Flutter source are revision controlled together.',
             ),
           ),
         ],

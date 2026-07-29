@@ -110,14 +110,18 @@ class _ProtectionDesignScreenState extends State<ProtectionDesignScreen> {
   }
 
   void _refresh() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   double _number(TextEditingController controller) =>
       double.tryParse(controller.text.trim()) ?? double.nan;
 
   double? _optional(TextEditingController controller) {
-    if (controller.text.trim().isEmpty) return null;
+    if (controller.text.trim().isEmpty) {
+      return null;
+    }
     return double.tryParse(controller.text.trim());
   }
 
@@ -719,7 +723,8 @@ class _ProtectionDesignScreenState extends State<ProtectionDesignScreen> {
       label: label,
       topicId: topicId,
       child: DropdownButtonFormField<String>(
-        value: values.contains(value) ? value : values.first,
+        key: ValueKey('$label|${values.contains(value) ? value : values.first}'),
+        initialValue: values.contains(value) ? value : values.first,
         isExpanded: true,
         items: values
             .map(
@@ -733,19 +738,25 @@ class _ProtectionDesignScreenState extends State<ProtectionDesignScreen> {
             )
             .toList(),
         onChanged: (newValue) {
-          if (newValue != null) onChanged(newValue);
+          if (newValue != null) {
+            onChanged(newValue);
+          }
         },
       ),
     );
   }
 
   String _format(double value, String unit) {
-    if (!value.isFinite) return 'Not assessed';
+    if (!value.isFinite) {
+      return 'Not assessed';
+    }
     return '${_plain(value)} $unit';
   }
 
   String _plain(double value) {
-    if (!value.isFinite) return 'Not assessed';
+    if (!value.isFinite) {
+      return 'Not assessed';
+    }
     final decimals = value.abs() >= 100 ? 0 : value.abs() >= 10 ? 1 : 2;
     return value.toStringAsFixed(decimals);
   }

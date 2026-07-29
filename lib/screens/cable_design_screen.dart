@@ -71,7 +71,9 @@ class _CableDesignScreenState extends State<CableDesignScreen> {
   }
 
   void _refresh() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   double _number(TextEditingController controller) =>
@@ -214,7 +216,7 @@ class _CableDesignScreenState extends State<CableDesignScreen> {
                         label: 'Installation method',
                         topicId: 'installation_method',
                         child: DropdownButtonFormField<String>(
-                          value: _installationMethod,
+                          initialValue: _installationMethod,
                           items: const [
                             DropdownMenuItem(value: 'In air', child: Text('In air / trefoil')),
                             DropdownMenuItem(value: 'Direct buried', child: Text('Direct buried')),
@@ -227,7 +229,7 @@ class _CableDesignScreenState extends State<CableDesignScreen> {
                         label: 'Screen bonding',
                         topicId: 'screen_bonding',
                         child: DropdownButtonFormField<String>(
-                          value: _screenBonding,
+                          initialValue: _screenBonding,
                           items: const [
                             DropdownMenuItem(value: 'Not selected', child: Text('Not selected')),
                             DropdownMenuItem(value: 'Single-point bonded', child: Text('Single-point bonded')),
@@ -287,7 +289,8 @@ class _CableDesignScreenState extends State<CableDesignScreen> {
                       label: 'Selected cable',
                       topicId: 'data_status',
                       child: DropdownButtonFormField<String>(
-                        value: records.any((e) => e.id == selected?.id) ? selected?.id : null,
+                        key: ValueKey(selected?.id),
+                        initialValue: records.any((e) => e.id == selected?.id) ? selected?.id : null,
                         isExpanded: true,
                         hint: const Text('No matching cable'),
                         items: records.take(250).map((record) {
@@ -421,7 +424,8 @@ class _CableDesignScreenState extends State<CableDesignScreen> {
       label: label,
       topicId: topicId,
       child: DropdownButtonFormField<String>(
-        value: values.contains(value) ? value : values.first,
+        key: ValueKey('$label|${values.contains(value) ? value : values.first}'),
+        initialValue: values.contains(value) ? value : values.first,
         isExpanded: true,
         items: values
             .map((item) => DropdownMenuItem(
@@ -430,14 +434,18 @@ class _CableDesignScreenState extends State<CableDesignScreen> {
                 ))
             .toList(),
         onChanged: (newValue) {
-          if (newValue != null) onChanged(newValue);
+          if (newValue != null) {
+            onChanged(newValue);
+          }
         },
       ),
     );
   }
 
   String _format(double value, String unit) {
-    if (!value.isFinite) return 'Not assessed';
+    if (!value.isFinite) {
+      return 'Not assessed';
+    }
     return '${value.toStringAsFixed(2)} $unit';
   }
 }

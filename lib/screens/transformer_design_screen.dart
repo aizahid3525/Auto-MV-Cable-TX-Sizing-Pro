@@ -67,7 +67,9 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
   }
 
   void _refresh() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   double _number(TextEditingController controller) =>
@@ -217,7 +219,7 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
                         label: 'Primary voltage',
                         topicId: 'system_voltage',
                         child: DropdownButtonFormField<double>(
-                          value: _primaryKv,
+                          initialValue: _primaryKv,
                           items: const [
                             DropdownMenuItem(value: 6.6, child: Text('6.6 kV')),
                             DropdownMenuItem(value: 11, child: Text('11 kV')),
@@ -225,7 +227,9 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
                             DropdownMenuItem(value: 33, child: Text('33 kV')),
                           ],
                           onChanged: (value) {
-                            if (value != null) setState(() => _primaryKv = value);
+                            if (value != null) {
+                              setState(() => _primaryKv = value);
+                            }
                           },
                         ),
                       ),
@@ -236,7 +240,8 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
                       label: 'Selected transformer',
                       topicId: 'data_status',
                       child: DropdownButtonFormField<String>(
-                        value: records.any((e) => e.id == selected?.id) ? selected?.id : null,
+                        key: ValueKey(selected?.id),
+                        initialValue: records.any((e) => e.id == selected?.id) ? selected?.id : null,
                         isExpanded: true,
                         hint: const Text('No matching transformer'),
                         items: records.map((record) {
@@ -371,7 +376,7 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
     return SectionCard(
       title: 'Integrated protection preview',
       subtitle: 'Default 20 kA / 3 s MV duty — use the Protection page for project inputs',
-      trailing: HelperButton(
+      trailing: const HelperButton(
         topicId: 'protection_status',
         information: true,
       ),
@@ -446,7 +451,8 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
       label: label,
       topicId: topicId,
       child: DropdownButtonFormField<String>(
-        value: values.contains(value) ? value : values.first,
+        key: ValueKey('$label|${values.contains(value) ? value : values.first}'),
+        initialValue: values.contains(value) ? value : values.first,
         isExpanded: true,
         items: values
             .map((item) => DropdownMenuItem(
@@ -455,14 +461,18 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
                 ))
             .toList(),
         onChanged: (newValue) {
-          if (newValue != null) onChanged(newValue);
+          if (newValue != null) {
+            onChanged(newValue);
+          }
         },
       ),
     );
   }
 
   String _format(double value, String unit) {
-    if (!value.isFinite) return 'Not assessed';
+    if (!value.isFinite) {
+      return 'Not assessed';
+    }
     return '${value.toStringAsFixed(2)} $unit';
   }
 }

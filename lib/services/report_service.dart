@@ -5,6 +5,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../calculations.dart';
+import '../models.dart';
 import '../protection_models.dart';
 
 class ReportService {
@@ -33,11 +34,14 @@ class ReportService {
           child: pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              pw.Text(
+              const pw.Text(
                 'AUTO MV CABLE & TX SIZING PRO',
-                style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: const PdfColor(0.5333, 0.0549, 0.3098)),
+                style: pw.TextStyle(
+                  fontWeight: pw.FontWeight.bold,
+                  color: PdfColor(0.5333, 0.0549, 0.3098),
+                ),
               ),
-              pw.Text('MVTX-CALC-V1'),
+              const pw.Text('MVTX-CALC-V1'),
             ],
           ),
         ),
@@ -46,20 +50,23 @@ class ReportService {
           child: pw.Text('Page ${context.pageNumber} of ${context.pagesCount}'),
         ),
         build: (context) => [
-          pw.SizedBox(height: 12),
-          pw.Text(
+          const pw.SizedBox(height: 12),
+          const pw.Text(
             'Coordinated MV Cable and Transformer Preliminary Design',
-            style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
+            style: pw.TextStyle(
+              fontSize: 20,
+              fontWeight: pw.FontWeight.bold,
+            ),
           ),
-          pw.SizedBox(height: 8),
-          pw.Container(
-            padding: const pw.EdgeInsets.all(10),
-            color: const PdfColor(1.0, 0.9176, 0.9529),
+          const pw.SizedBox(height: 8),
+          const pw.Container(
+            padding: pw.EdgeInsets.all(10),
+            color: PdfColor(1.0, 0.9176, 0.9529),
             child: pw.Text(
               'Engineering design aid only. Verify exact manufacturer data, utility fault level, cable screen bonding, protection clearing time, TNB/ST requirements and project-specific studies before final issue.',
             ),
           ),
-          pw.SizedBox(height: 16),
+          const pw.SizedBox(height: 16),
           _heading('Transformer selection'),
           _table([
             ['Selected transformer', transformer.transformer.shortLabel],
@@ -69,7 +76,7 @@ class ReportService {
             ['Approx. LV terminal fault', '${transformer.approxFaultCurrentKa.toStringAsFixed(2)} kA'],
             ['Status', transformer.status.label],
           ]),
-          pw.SizedBox(height: 16),
+          const pw.SizedBox(height: 16),
           _heading('MV cable selection'),
           _table([
             ['Selected cable', cable.cable.shortLabel],
@@ -81,7 +88,7 @@ class ReportService {
             ['Charging current', '${cable.chargingCurrentA.toStringAsFixed(3)} A'],
             ['Status', cable.status.label],
           ]),
-          pw.SizedBox(height: 16),
+          const pw.SizedBox(height: 16),
           _heading('Protection and switchgear selection'),
           _table([
             ['Preferred MV protection', protection.preferredMvDevice],
@@ -94,10 +101,10 @@ class ReportService {
             ['ACB instantaneous', protection.instantaneousPickupA == null ? 'OFF / project review' : '${protection.instantaneousPickupA!.toStringAsFixed(0)} A'],
             ['Protection status', protection.status.label],
           ]),
-          pw.SizedBox(height: 10),
+          const pw.SizedBox(height: 10),
           _heading('Recommended relay functions'),
           ...protection.relayFunctions.map((item) => pw.Bullet(text: item)),
-          pw.SizedBox(height: 16),
+          const pw.SizedBox(height: 16),
           _heading('Required verification'),
           pw.Bullet(text: 'Exact manufacturer cable and transformer datasheets or nameplates.'),
           pw.Bullet(text: 'IEC 60287 current-rating study and project installation conditions.'),
@@ -130,17 +137,20 @@ class ReportService {
 
   static pw.Widget _heading(String text) => pw.Text(
         text,
-        style: pw.TextStyle(
+        style: const pw.TextStyle(
           fontSize: 14,
           fontWeight: pw.FontWeight.bold,
-          color: const PdfColor(0.7608, 0.0941, 0.3569),
+          color: PdfColor(0.7608, 0.0941, 0.3569),
         ),
       );
 
   static pw.Widget _table(List<List<String>> rows) => pw.TableHelper.fromTextArray(
         headers: const ['Item', 'Value'],
         data: rows,
-        headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
+        headerStyle: const pw.TextStyle(
+          fontWeight: pw.FontWeight.bold,
+          color: PdfColors.white,
+        ),
         headerDecoration: const pw.BoxDecoration(color: PdfColor(0.7608, 0.0941, 0.3569)),
         cellPadding: const pw.EdgeInsets.all(7),
         columnWidths: {

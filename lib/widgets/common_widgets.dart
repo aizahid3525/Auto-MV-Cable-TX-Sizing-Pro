@@ -245,7 +245,9 @@ class _HelperSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (body.trim().isEmpty) return const SizedBox.shrink();
+    if (body.trim().isEmpty) {
+      return const SizedBox.shrink();
+    }
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(

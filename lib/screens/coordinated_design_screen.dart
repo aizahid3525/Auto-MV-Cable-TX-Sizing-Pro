@@ -67,7 +67,9 @@ class _CoordinatedDesignScreenState extends State<CoordinatedDesignScreen> {
   }
 
   void _refresh() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   double _n(TextEditingController controller) =>
@@ -229,7 +231,7 @@ class _CoordinatedDesignScreenState extends State<CoordinatedDesignScreen> {
                     label: 'MV system voltage',
                     topicId: 'system_voltage',
                     child: DropdownButtonFormField<double>(
-                      value: _systemKv,
+                      initialValue: _systemKv,
                       items: const [
                         DropdownMenuItem(value: 6.6, child: Text('6.6 kV')),
                         DropdownMenuItem(value: 11, child: Text('11 kV')),
@@ -288,7 +290,7 @@ class _CoordinatedDesignScreenState extends State<CoordinatedDesignScreen> {
                     label: 'Installation method',
                     topicId: 'installation_method',
                     child: DropdownButtonFormField<String>(
-                      value: _installationMethod,
+                      initialValue: _installationMethod,
                       items: const [
                         DropdownMenuItem(value: 'In air', child: Text('In air / trefoil')),
                         DropdownMenuItem(value: 'Direct buried', child: Text('Direct buried')),
@@ -306,7 +308,7 @@ class _CoordinatedDesignScreenState extends State<CoordinatedDesignScreen> {
                     label: 'Screen bonding',
                     topicId: 'screen_bonding',
                     child: DropdownButtonFormField<String>(
-                      value: _screenBonding,
+                      initialValue: _screenBonding,
                       items: const [
                         DropdownMenuItem(value: 'Single-point bonded', child: Text('Single-point bonded')),
                         DropdownMenuItem(value: 'Both-end bonded', child: Text('Both-end bonded')),

@@ -353,6 +353,10 @@ for filename in required_dart:
     if path.exists():
         check(balanced_dart(path), f"Unbalanced Dart delimiters in {filename}")
 
+for dart_path in sorted([*ROOT.glob("lib/**/*.dart"), *ROOT.glob("test/**/*.dart")]):
+    check(balanced_dart(dart_path),
+          f"Unbalanced Dart delimiters in {dart_path.relative_to(ROOT)}")
+
 main_text = (ROOT / "lib/main.dart").read_text(encoding="utf-8")
 check("ProtectionDesignScreen" in main_text, "Protection page not routed")
 check("NavigationDestinationLabelBehavior.onlyShowSelected" in main_text,
@@ -383,6 +387,41 @@ report_text = (ROOT / "lib/services/report_service.dart").read_text(encoding="ut
 for term in ["Protection and switchgear selection", "Recommended relay functions",
              "Icu, Ics, Icw", "CT ratio, class, burden"]:
     check(term in report_text, f"Protection PDF contract missing {term}")
+
+# Analyzer hotfix contracts from the supplied Android/Windows CI output.
+check("import '../models.dart';" in report_text,
+      "AssessmentStatus label extension is not imported by report_service.dart")
+for status_expression in [
+    "transformer.status.label", "cable.status.label", "protection.status.label",
+]:
+    check(status_expression in report_text,
+          f"PDF status label contract missing {status_expression}")
+
+all_dart_text = "\n".join(
+    path.read_text(encoding="utf-8")
+    for path in sorted(ROOT.glob("lib/**/*.dart"))
+)
+check(
+    re.search(
+        r"DropdownButtonFormField<[^>]+>\(\s*\n\s*value:",
+        all_dart_text,
+    ) is None,
+    "Deprecated DropdownButtonFormField.value argument remains",
+)
+check("initialValue:" in all_dart_text,
+      "DropdownButtonFormField initialValue migration missing")
+
+single_line_if = re.compile(r"^\s*if\s*\([^\n]+\)\s+(?!\{)[^/\n].*;\s*$", re.MULTILINE)
+check(single_line_if.search(all_dart_text) is None,
+      "Single-statement if without braces remains")
+
+for term in [
+    "const Padding(\n          padding: EdgeInsets.fromLTRB(18, 18, 18, 0)",
+    "trailing: const HelperButton(\n        topicId: 'protection_status'",
+    "const pw.Text('MVTX-CALC-V1')",
+    "const pw.Container(\n            padding: pw.EdgeInsets.all(10)",
+]:
+    check(term in all_dart_text, f"Reported const-constructor cleanup missing: {term}")
 
 # Resolve local Dart imports.
 for dart in ROOT.glob("lib/**/*.dart"):

@@ -43,9 +43,9 @@ class _DatabaseScreenState extends State<DatabaseScreen>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
-          child: const PageHeader(
+        const Padding(
+          padding: EdgeInsets.fromLTRB(18, 18, 18, 0),
+          child: PageHeader(
             title: 'Engineering Database',
             subtitle: 'Malaysia-focused MV cable, transformer and protection records with controlled source status.',
             icon: Icons.storage,
@@ -270,7 +270,8 @@ class _DatabaseScreenState extends State<DatabaseScreen>
     return SizedBox(
       width: 210,
       child: DropdownButtonFormField<String>(
-        value: values.contains(value) ? value : values.first,
+        key: ValueKey(values.contains(value) ? value : values.first),
+        initialValue: values.contains(value) ? value : values.first,
         isExpanded: true,
         items: values
             .map((item) => DropdownMenuItem(
@@ -279,7 +280,9 @@ class _DatabaseScreenState extends State<DatabaseScreen>
                 ))
             .toList(),
         onChanged: (newValue) {
-          if (newValue != null) onChanged(newValue);
+          if (newValue != null) {
+            onChanged(newValue);
+          }
         },
       ),
     );

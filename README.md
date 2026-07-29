@@ -149,3 +149,11 @@ GitHub Actions workflows or another environment with the Flutter SDK.
 - Windows CI disables automatic CRLF conversion before checkout.
 - Android and Windows CI run `dart format lib test` before the strict idempotence check.
 - The formatter remains a gate: the second formatter command must report no further changes.
+
+## Analyzer hotfix
+
+- Resolves the three `AssessmentStatus.label` analyzer errors in PDF reporting.
+- Removes all reported `DropdownButtonFormField.value` deprecations.
+- Cleans the reported braces and const-constructor lints.
+- Adds regression gates for these source contracts.
+
