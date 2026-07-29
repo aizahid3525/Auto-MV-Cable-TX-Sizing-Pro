@@ -185,9 +185,11 @@ class _ProtectionDesignScreenState extends State<ProtectionDesignScreen> {
   Widget build(BuildContext context) {
     final result = _evaluate();
     final profile = _repo.protectionProfile(_profileId);
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(18),
-      child: Column(
+    return EngineeringHelpScope(
+      values: _helpValues(result, profile),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(18),
+        child: Column(
         children: [
           const PageHeader(
             title: 'Protection & Switchgear',
@@ -365,9 +367,74 @@ class _ProtectionDesignScreenState extends State<ProtectionDesignScreen> {
           ],
           const SizedBox(height: 16),
           _resultCard(result),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Map<String, Object?> _helpValues(
+    ProtectionDesignResult result,
+    ProtectionProfileRecord profile,
+  ) {
+    final input = _input;
+    return <String, Object?>{
+      'screen': 'protection',
+      'protectionProfile': profile.name,
+      'protectionStatus': result.status.label,
+      'overallStatus': result.status.label,
+      'mvDeviceStrategy': input.mvDeviceStrategy,
+      'preferredMvDevice': result.preferredMvDevice,
+      'transformerType': input.transformerType,
+      'transformerRatingKva': input.transformerKva,
+      'selectedTransformerKva': input.transformerKva,
+      'primaryKv': input.primaryKv,
+      'secondaryKv': input.secondaryKv,
+      'impedancePercent': input.impedancePercent,
+      'numberOfUnits': input.numberOfUnits.toDouble(),
+      'mvFaultCurrentKa': input.mvFaultCurrentKa,
+      'mvFaultDurationS': input.mvFaultDurationS,
+      'lvFaultOverrideKa': input.lvFaultOverrideKa,
+      'lvBusOrCableRatingA': input.lvBusOrCableRatingA,
+      'manualVcbVoltageKv': input.manualVcbVoltageKv,
+      'manualVcbCurrentA': input.manualVcbCurrentA,
+      'manualVcbBreakingKa': input.manualVcbBreakingKa,
+      'manualFuseCurrentA': input.manualFuseCurrentA,
+      'manualAcbFrameA': input.manualAcbFrameA,
+      'manualAcbBreakingKa': input.manualAcbBreakingKa,
+      'manualCtPrimaryA': input.manualCtPrimaryA,
+      'manualLongTimePickupA': input.manualLongTimePickupA,
+      'manualShortTimePickupA': input.manualShortTimePickupA,
+      'manualShortTimeDelayS': input.manualShortTimeDelayS,
+      'manualInstantaneousPickupA': input.manualInstantaneousPickupA,
+      'manualGroundFaultPickupA': input.manualGroundFaultPickupA,
+      'manualGroundFaultDelayS': input.manualGroundFaultDelayS,
+      'primaryCurrentA': result.primaryCurrentA,
+      'secondaryCurrentA': result.secondaryCurrentA,
+      'calculatedLvFaultKa': result.calculatedLvFaultKa,
+      'vcbRatedVoltageKv': result.vcbRatedVoltageKv,
+      'vcbRatedCurrentA': result.vcbRatedCurrentA,
+      'vcbBreakingCurrentKa': result.vcbBreakingCurrentKa,
+      'vcbShortTimeDurationS': result.vcbShortTimeDurationS,
+      'fuseCurrentA': result.fuseCurrentA,
+      'acbFrameA': result.acbFrameA,
+      'acbSensorA': result.acbSensorA,
+      'acbBreakingCurrentKa': result.acbBreakingCurrentKa,
+      'acbShortTimeWithstandKa': result.acbShortTimeWithstandKa,
+      'acbPoles': result.acbPoles,
+      'ctRatio': result.ctRatio,
+      'ctTargetUtilisation': profile.preferredCtNormalLoadingPercent / 100,
+      'longTimePickupA': result.longTimePickupA,
+      'shortTimePickupA': result.shortTimePickupA,
+      'shortTimeDelayS': result.shortTimeDelayS,
+      'instantaneousPickupA': result.instantaneousPickupA,
+      'groundFaultPickupA': result.groundFaultPickupA,
+      'groundFaultDelayS': result.groundFaultDelayS,
+      'phaseOvercurrentPickupA': result.phaseOvercurrentPickupA,
+      'earthFaultPickupA': result.earthFaultPickupA,
+      'highSetPickupA': result.highSetPickupA,
+      'internalProtectionSummary': result.internalProtection.join('; '),
+    };
   }
 
   Widget _manualOverrideCard(ProtectionDesignResult result) {

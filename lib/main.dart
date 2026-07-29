@@ -407,7 +407,7 @@ class _AppShellState extends State<AppShell> {
           '${repo.cables.length} MV cable records • '
           '${repo.transformers.length} transformer records • '
           '${repo.protectionDevices.length} protection records.\n\n'
-          'Version 1.1.0+3 • MVTX-CALC-V1 • MVTX-PROTECTION-V1',
+          'Version 1.1.0+4 • MVTX-CALC-V1 • MVTX-PROTECTION-V1',
         ),
         actions: [
           TextButton(
@@ -588,7 +588,7 @@ class _AppNavigationDrawer extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.fromLTRB(22, 18, 22, 28),
               child: Text(
-                'Version 1.1.0 (3)\nModern radial dashboard and sidebar\nDesign-assist only. Verify final issue against applicable standards, utility requirements and exact manufacturer data.',
+                'Version 1.1.0 (4)\nFuchsia UI, scrollable database and live engineering helpers\nDesign-assist only. Verify final issue against applicable standards, utility requirements and exact manufacturer data.',
                 style: TextStyle(
                   color: Color(0xFF64748B),
                   fontWeight: FontWeight.w700,

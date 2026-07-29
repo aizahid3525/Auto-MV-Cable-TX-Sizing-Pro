@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Independent fail-closed validation for the controlled Rev2 engineering data and Rev3 modern UI package."""
+"""Independent fail-closed validation for the controlled Rev4 fuchsia UI,
+real-time helper, database scrolling and Microsoft Store MSIX package."""
 
 from __future__ import annotations
 
@@ -208,7 +209,7 @@ def balanced_dart(path: Path) -> bool:
 pubspec_path = ROOT / "pubspec.yaml"
 pubspec = pubspec_path.read_text(encoding="utf-8")
 check("name: auto_mv_cable_tx_sizing_pro" in pubspec, "Incorrect Flutter project name")
-check("version: 1.1.0+3" in pubspec, "Incorrect modern UI build version")
+check("version: 1.1.0+4" in pubspec, "Incorrect Rev4 build version")
 for asset in [
     "mv_cable_database.json",
     "transformer_database.json",
@@ -237,8 +238,22 @@ check(transformers.get("recordCount") == len(transformers.get("records", [])) ==
       "Transformer record count mismatch")
 check(protection.get("recordCount") == len(protection.get("records", [])) == 315,
       "Protection record count mismatch")
-check(help_data.get("recordCount") == len(help_data.get("records", [])) >= 38,
-      "Insufficient or inconsistent helper coverage")
+check(help_data.get("schema") == "MVTX-HELP-V2", "Incorrect helper schema")
+check(help_data.get("recordCount") == len(help_data.get("records", [])) >= 45,
+      "Insufficient or inconsistent Rev4 helper coverage")
+for helper in help_data.get("records", []):
+    helper_id = helper.get("ID", "<unknown>")
+    for field in [
+        "ID", "Title", "Explanation", "How app uses it",
+        "Formula / equation", "Worked example", "Warning",
+        "Source / basis", "Reference table",
+    ]:
+        check(bool(str(helper.get(field, "")).strip()),
+              f"Helper {helper_id} has empty field: {field}")
+    table = str(helper.get("Reference table", ""))
+    rows = [row.strip() for row in table.split(" | ") if row.strip()]
+    check(len(rows) >= 2 and all(" / " in row for row in rows),
+          f"Helper {helper_id} reference table is not a parseable two-column table")
 check(standards.get("recordCount") == len(standards.get("records", [])) >= 17,
       "Insufficient or inconsistent standards register")
 check(sources.get("recordCount") == len(sources.get("records", [])) >= 29,
@@ -306,6 +321,9 @@ for topic in [
     "vcb_selection", "mv_fuse_selection", "ct_selection",
     "relay_functions", "acb_selection", "acb_lsig",
     "internal_tx_protection", "protection_status",
+    "database_search", "protection_category", "cable_loading",
+    "cable_loss", "transformer_losses", "transformer_efficiency",
+    "transformer_regulation",
 ]:
     check(topic in help_ids, f"Missing protection helper {topic}")
 
@@ -372,41 +390,65 @@ for term in [
 
 dashboard_text = (ROOT / "lib/screens/dashboard_screen.dart").read_text(encoding="utf-8")
 for term in [
-    "Interactive radial chart",
-    "MV cable family",
-    "Transformer family",
-    "_CoveragePainter",
-    "_coverageIndexFromPosition",
-    "View ${selected.value} records",
-    "Engineering Database & Reference",
+    "Interactive radial chart", "MV cable family", "Transformer family",
+    "_CoveragePainter", "_coverageIndexFromPosition",
+    "View ${selected.value} records", "Engineering Database & Reference",
+    "class _MetricCard", "Icons.arrow_forward_rounded", "FittedBox(",
+    "_formatCount(value)", "EngineeringHelpScope",
 ]:
-    check(term in dashboard_text, f"Modern radial dashboard contract missing {term}")
+    check(term in dashboard_text, f"Rev4 dashboard contract missing {term}")
+metric_block = dashboard_text.split("class _MetricCard", 1)[1]
+check(metric_block.find("Icons.arrow_forward_rounded") < metric_block.find("FittedBox("),
+      "Metric arrow must be above the count/text block")
+check("maxLines: 3" in metric_block and "TextOverflow.ellipsis" in metric_block,
+      "Metric label wrapping safeguard missing")
 
 common_widgets_text = (ROOT / "lib/widgets/common_widgets.dart").read_text(encoding="utf-8")
 for term in [
-    "Input fields use [information] = false",
-    "Result/output card",
-    "final breakpoint = requestedWidth.clamp(220.0, 252.0).toDouble()",
-    "if (!hasPair)",
+    "class EngineeringHelpScope", "class HelperButton",
+    "Formula / equation", "Live calculation using current values",
+    "Reference values / options", "SingleChildScrollView(",
+    "_topicIdForResultLabel", "class LabeledField", "class ResultTile",
+    "class ResponsiveGrid", "if (!hasPair)",
     "SizedBox(width: double.infinity, child: children[index])",
 ]:
-    check(term in common_widgets_text, f"Responsive/helper UI contract missing {term}")
+    check(term in common_widgets_text, f"Rev4 responsive/help contract missing {term}")
 labeled_field_block = common_widgets_text.split("class LabeledField", 1)[1].split("class ResultTile", 1)[0]
 check("information: true" not in labeled_field_block,
-      "Input LabeledField must not show an information icon")
+      "Input LabeledField must use the question-mark helper")
+helper_button_block = common_widgets_text.split("class HelperButton", 1)[1].split("Future<void> showHelperDialog", 1)[0]
+check("Icons.help_outline_rounded" in helper_button_block,
+      "Input question-mark helper icon is missing")
 result_tile_block = common_widgets_text.split("class ResultTile", 1)[1].split("class ResponsiveGrid", 1)[0]
 check("Icons.info_outline_rounded" in result_tile_block,
       "ResultTile information icon is missing")
+check("information: true" in result_tile_block,
+      "ResultTile must request result-information semantics")
+
+all_screen_text = "\n".join(
+    path.read_text(encoding="utf-8")
+    for path in sorted(ROOT.glob("lib/screens/*.dart"))
+)
+used_topic_ids = set(re.findall(r"topicId:\s*'([^']+)'", all_screen_text))
+helper_ids = {r.get("ID") for r in help_data.get("records", [])}
+resolver_ids = set(re.findall(r"case '([^']+)'", common_widgets_text))
+for topic_id in sorted(used_topic_ids):
+    check(topic_id in helper_ids, f"Used helper topic is absent from JSON: {topic_id}")
+    check(topic_id in resolver_ids, f"Used helper topic lacks live-value resolver: {topic_id}")
 
 database_text = (ROOT / "lib/screens/database_screen.dart").read_text(encoding="utf-8")
 for term in [
-    "class DatabaseFilterTransfer",
-    "_cableFamily = transfer.label",
-    "_txType = transfer.label",
-    "ResponsiveGrid(",
-    "Record information",
+    "class DatabaseFilterTransfer", "_cableFamily = transfer.label",
+    "_txType = transfer.label", "ResponsiveGrid(", "Record information",
+    "CustomScrollView(", "PageStorageKey<String>(scrollKey)",
+    "ScrollViewKeyboardDismissBehavior.onDrag", "SliverToBoxAdapter(",
+    "SliverList(", "topicId: 'database_search'",
+    "topicId: 'protection_category'",
 ]:
-    check(term in database_text, f"Database radial-transfer/UI contract missing {term}")
+    check(term in database_text, f"Rev4 database scroll/helper contract missing {term}")
+database_tab_block = database_text.split("Widget _databaseTab", 1)[1].split("Widget _filterField", 1)[0]
+check("return Column(" not in database_tab_block,
+      "Database tab still uses a height-trapping fixed Column")
 
 repo_text = (ROOT / "lib/data_repository.dart").read_text(encoding="utf-8")
 for term in ["protection_database.json", "ProtectionProfileRecord", "ctRatios",
@@ -500,6 +542,69 @@ for dart in ROOT.glob("lib/**/*.dart"):
         target = (dart.parent / relative).resolve()
         check(target.exists(), f"Broken import {relative} in {dart.relative_to(ROOT)}")
 
+# Fuchsia theme identity.
+theme_text = (ROOT / "lib/app_theme.dart").read_text(encoding="utf-8")
+for term in [
+    "0xFF581C87", "0xFFC026D3", "0xFFF0ABFC",
+    "static const Color fuchsia", "ColorScheme.fromSeed",
+    "navigationBarTheme", "tabBarTheme", "focusedBorder",
+]:
+    check(term in theme_text, f"Fuchsia theme contract missing {term}")
+check("0xFF0F2A6A" not in theme_text, "Legacy blue theme remains active")
+
+# Microsoft Store package identity and MSIX workflow.
+manifest_path = ROOT / "Package.appxmanifest"
+check(manifest_path.exists(), "Microsoft Store Package.appxmanifest missing")
+if manifest_path.exists():
+    try:
+        package_root = ET.parse(manifest_path).getroot()
+        appx_ns = "http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+        identity = package_root.find(f"{{{appx_ns}}}Identity")
+        properties = package_root.find(f"{{{appx_ns}}}Properties")
+        check(identity is not None, "Store Identity element missing")
+        if identity is not None:
+            check(identity.attrib.get("Name") == "AiZahid.AutoMVCableTXSizingPro",
+                  "Incorrect Microsoft Store identity name")
+            check(identity.attrib.get("Publisher") ==
+                  "CN=A0E77901-C4C9-4DDA-9126-02F6FC3FDA15",
+                  "Incorrect Microsoft Store publisher")
+            check(identity.attrib.get("Version") == "1.1.0.0",
+                  "Incorrect Microsoft Store package version")
+            check(identity.attrib.get("ProcessorArchitecture") == "x64",
+                  "Incorrect Store processor architecture")
+        check(properties is not None, "Store Properties element missing")
+        if properties is not None:
+            publisher_display = properties.find(f"{{{appx_ns}}}PublisherDisplayName")
+            display_name = properties.find(f"{{{appx_ns}}}DisplayName")
+            check(publisher_display is not None and publisher_display.text == "AiZahid",
+                  "Incorrect Store publisher display name")
+            check(display_name is not None and
+                  display_name.text == "Auto MV Cable & TX Sizing Pro",
+                  "Incorrect Store display name")
+    except ET.ParseError as exc:
+        check(False, f"Invalid Package.appxmanifest XML: {exc}")
+
+store_assets = ROOT / "windows" / "packaging" / "Assets"
+for asset_name in [
+    "StoreLogo.png", "Square44x44Logo.png", "Square150x150Logo.png",
+    "Square310x310Logo.png", "Wide310x150Logo.png", "SplashScreen.png",
+]:
+    asset_path = store_assets / asset_name
+    check(asset_path.exists(), f"Missing Microsoft Store asset {asset_name}")
+    if asset_path.exists():
+        check(asset_path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"),
+              f"Store asset is not a valid PNG signature: {asset_name}")
+
+windows_workflow = (ROOT / ".github/workflows/windows.yml").read_text(encoding="utf-8")
+for term in [
+    "Create Microsoft Store MSIX", "makeappx.exe",
+    "Auto_MV_Cable_TX_Sizing_Pro_1.1.0.0_x64.msix",
+    "WINDOWS_PFX_BASE64", "WINDOWS_PFX_PASSWORD",
+    "AiZahid.AutoMVCableTXSizingPro",
+    "CN=A0E77901-C4C9-4DDA-9126-02F6FC3FDA15",
+]:
+    check(term in windows_workflow, f"Windows MSIX workflow contract missing {term}")
+
 # Analytical regression checks.
 primary = 1000 / (math.sqrt(3) * 11)
 secondary = 1000 / (math.sqrt(3) * 0.415)
@@ -544,6 +649,16 @@ if master.exists():
                 "Protection_Regression", "Data_Manifest_Rev2",
             ]:
                 check(sheet in sheet_names, f"Workbook missing sheet {sheet}")
+            xml_text = "\n".join(
+                archive.read(name).decode("utf-8", errors="ignore")
+                for name in archive.namelist()
+                if name.startswith("xl/") and name.endswith(".xml")
+            )
+            for term in [
+                "Formula / equation", "MVTX-HELP-V2", "database_search",
+                "transformer_efficiency", "1.1.0+4",
+            ]:
+                check(term in xml_text, f"Workbook Rev4 helper/version content missing {term}")
 
 # Generated Android identity and XML-safety contract.
 platform_config_path = ROOT / "tool" / "configure_platforms.py"
@@ -628,6 +743,12 @@ if widget_test_path.exists():
           "Dashboard widget test must use bounded deterministic pumping")
     check("expect(tester.takeException(), isNull)" in widget_test,
           "Dashboard widget test must assert that no framework exception occurred")
+    for term in [
+        "database filters and records share a scrollable surface",
+        "PageStorageKey<String>('mv-cable-database')",
+        "tester.drag(find.byKey(key)",
+    ]:
+        check(term in widget_test, f"Database scrolling regression test missing {term}")
 
 # Workflow and docs contracts.
 for workflow in [".github/workflows/android.yml", ".github/workflows/windows.yml"]:
@@ -642,18 +763,20 @@ for workflow in [".github/workflows/android.yml", ".github/workflows/windows.yml
         check(term in text, f"Workflow {workflow} missing {term}")
 
 readme = (ROOT / "README.md").read_text(encoding="utf-8")
-for term in ["1.1.0+3", "MVTX-PROTECTION-V1", "Professional manual",
+for term in ["1.1.0+4", "MVTX-PROTECTION-V1", "Professional manual",
+             "fuchsia", "AiZahid.AutoMVCableTXSizingPro",
              "315 protection and switchgear records", "does **not** claim final selectivity"]:
     check(term in readme, f"README contract missing {term}")
 
 if errors:
-    print(f"STATIC REV3 UI VALIDATION: FAIL — {checks} checks, {len(errors)} errors")
+    print(f"STATIC REV4 VALIDATION: FAIL — {checks} checks, {len(errors)} errors")
     for error in errors:
         print(f" - {error}")
     sys.exit(1)
 
 print(
-    f"STATIC REV3 UI VALIDATION: PASS — {checks} checks; "
-    "identity, controlled data, protection envelopes, fail-closed safeguards, "
-    "UI/report integration, workbook integrity and analytical regressions verified."
+    f"STATIC REV4 VALIDATION: PASS — {checks} checks; "
+    "fuchsia identity, controlled data, real-time equation helpers, responsive tables, "
+    "database scrolling, metric-card layout, MSIX identity, workbook integrity and "
+    "analytical regressions verified."
 )

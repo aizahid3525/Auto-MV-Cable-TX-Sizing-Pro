@@ -1,6 +1,6 @@
 {
-  "schema": "MVTX-HELP-V1",
-  "recordCount": 38,
+  "schema": "MVTX-HELP-V2",
+  "recordCount": 45,
   "records": [
     {
       "ID": "system_voltage",
@@ -10,7 +10,8 @@
       "Worked example": "For an 11 kV network, use 11 kV and select a cable voltage designation accepted by the utility and insulation-coordination study.",
       "Warning": "Do not select cable voltage class from nominal voltage alone; confirm system earthing, Um, overvoltage duty and TNB/project requirements.",
       "Source / basis": "IEC 60502-2; TNB ESAH.",
-      "Reference table": "Network / Common Malaysia use | 6.6 kV / Selected Johor/Perak or private systems | 11 kV / Common distribution | 22 kV / Selected Johor/Perak | 33 kV / Higher-capacity distribution"
+      "Reference table": "Network / Common Malaysia use | 6.6 kV / Selected Johor/Perak or private systems | 11 kV / Common distribution | 22 kV / Selected Johor/Perak | 33 kV / Higher-capacity distribution",
+      "Formula / equation": "Three-phase current: I = S / (√3 × VLL). Phase voltage: Vph = VLL / √3."
     },
     {
       "ID": "load_kva",
@@ -20,7 +21,8 @@
       "Worked example": "1,000 kVA at 11 kV gives approximately 52.5 A.",
       "Warning": "Confirm whether the entered value is connected load, maximum demand, transformer rating or actual measured demand.",
       "Source / basis": "General three-phase power relationship.",
-      "Reference table": "Input type / Use | kVA / Direct apparent power | kW / Requires power factor and efficiency | A / Direct design current"
+      "Reference table": "Input type / Use | kVA / Direct apparent power | kW / Requires power factor and efficiency | A / Direct design current",
+      "Formula / equation": "S = P / (PF × η); I = S / (√3 × VLL)."
     },
     {
       "ID": "power_factor",
@@ -30,7 +32,8 @@
       "Worked example": "1,000 kW at PF 0.90 requires about 1,111 kVA before efficiency adjustment.",
       "Warning": "Do not assume unity PF for motors or industrial loads. TNB may impose minimum PF requirements.",
       "Source / basis": "TNB ESAH; project load study.",
-      "Reference table": "Typical load / Preliminary PF | Motors / mixed industrial / 0.80–0.90 | Corrected industrial / 0.90–0.95 | Power electronics / Use measured/fundamental PF"
+      "Reference table": "Typical load / Preliminary PF | Motors / mixed industrial / 0.80–0.90 | Corrected industrial / 0.90–0.95 | Power electronics / Use measured/fundamental PF",
+      "Formula / equation": "PF = P / S; sinφ = √(1 − PF²)."
     },
     {
       "ID": "installation_method",
@@ -40,7 +43,8 @@
       "Worked example": "A directly buried cable and the same cable in a duct can have different current ratings.",
       "Warning": "Use exact manufacturer/IEC 60287 installation data for final design.",
       "Source / basis": "IEC 60287 series; manufacturer catalogue.",
-      "Reference table": "Method / Reference basis | Air — trefoil / Single-core cables touching | Air — flat / Single-core cables in flat formation | Direct buried / Cable in soil | Underground duct / Cable in duct/pipe"
+      "Reference table": "Method / Reference basis | Air — trefoil / Single-core cables touching | Air — flat / Single-core cables in flat formation | Direct buried / Cable in soil | Underground duct / Cable in duct/pipe",
+      "Formula / equation": "Iz,total = Itab,method × Ctotal × n."
     },
     {
       "ID": "soil_resistivity",
@@ -50,7 +54,8 @@
       "Worked example": "A change from 1.2 to 2.5 K·m/W can materially reduce permissible current.",
       "Warning": "Site-specific thermal-resistivity testing is preferred for heavily loaded MV routes.",
       "Source / basis": "IEC 60287-3-1; geotechnical/thermal survey.",
-      "Reference table": "Condition / Indicative value | Moist controlled backfill / 0.8–1.2 K·m/W | Typical design assumption / 1.2–1.5 K·m/W | Dry/high-resistivity soil / 2.0–2.5+ K·m/W"
+      "Reference table": "Condition / Indicative value | Moist controlled backfill / 0.8–1.2 K·m/W | Typical design assumption / 1.2–1.5 K·m/W | Dry/high-resistivity soil / 2.0–2.5+ K·m/W",
+      "Formula / equation": "Iz = Itab × Csoil × Cambient × Cgroup × n. Csoil must come from the applicable IEC 60287/manufacturer thermal model."
     },
     {
       "ID": "fault_current",
@@ -60,7 +65,8 @@
       "Worked example": "20 kA for 1 s requires substantially less area than 20 kA for 3 s.",
       "Warning": "Use the maximum credible fault current at the cable location and actual protection clearing time.",
       "Source / basis": "IEC 60909-0; IEC 60949; TNB system ratings.",
-      "Reference table": "TNB voltage / Published equipment duty | 11 kV / 20 kA, 3 s | 22 kV / 20 kA, 3 s | 33 kV / 25 kA, 3 s"
+      "Reference table": "TNB voltage / Published equipment duty | 11 kV / 20 kA, 3 s | 22 kV / 20 kA, 3 s | 33 kV / 25 kA, 3 s",
+      "Formula / equation": "Adiabatic criterion: I²t ≤ k²S²; equivalently Ith = k × S / √t."
     },
     {
       "ID": "fault_time",
@@ -70,7 +76,8 @@
       "Worked example": "A 1-second rating cannot automatically be treated as a 3-second rating.",
       "Warning": "Include relay, breaker and grading time. Verify backup-clearing duty.",
       "Source / basis": "IEC 60949; protection coordination study.",
-      "Reference table": "Assessment / Typical source | Primary clearing / Relay + breaker curve | Backup clearing / Upstream grading study | Utility duty / TNB/project specification"
+      "Reference table": "Assessment / Typical source | Primary clearing / Relay + breaker curve | Backup clearing / Upstream grading study | Utility duty / TNB/project specification",
+      "Formula / equation": "Ith(t2) = Ith(t1) × √(t1 / t2)."
     },
     {
       "ID": "screen_bonding",
@@ -80,7 +87,8 @@
       "Worked example": "Both-end bonding can create circulating current; single-point bonding can create standing voltage.",
       "Warning": "A full sheath-voltage and bonding study may be required for long/high-current single-core circuits.",
       "Source / basis": "IEC 60287; IEC 60840 concepts; manufacturer engineering.",
-      "Reference table": "Method / Use | Both-end bonded / Common short routes; check losses | Single-point bonded / Eliminates circulating current; check voltage | Cross-bonded / Long routes; specialist design"
+      "Reference table": "Method / Use | Both-end bonded / Common short routes; check losses | Single-point bonded / Eliminates circulating current; check voltage | Cross-bonded / Long routes; specialist design",
+      "Formula / equation": "Screen loss: Pscreen = Iscreen² × Rscreen. Induced voltage and circulating current require the cable geometry, bonding arrangement and route length."
     },
     {
       "ID": "transformer_impedance",
@@ -90,7 +98,8 @@
       "Worked example": "1,000 kVA, 415 V, 6% impedance gives approximately 23.2 kA at the LV terminals when upstream impedance is neglected.",
       "Warning": "Use actual guaranteed impedance and tolerances for final short-circuit calculation.",
       "Source / basis": "IEC 60076-1; IEC 60909-0.",
-      "Reference table": "Rating / Preliminary reference only | ≤500 kVA / Around 4% | 750–1000 kVA / Around 5% | ≥1250 kVA / Around 6%"
+      "Reference table": "Rating / Preliminary reference only | ≤500 kVA / Around 4% | 750–1000 kVA / Around 5% | ≥1250 kVA / Around 6%",
+      "Formula / equation": "Approximate terminal fault current: Ik ≈ Irated / (Z% / 100)."
     },
     {
       "ID": "transformer_loading",
@@ -100,7 +109,8 @@
       "Worked example": "900 kVA demand on a 1,000 kVA transformer is 90% loading before future growth.",
       "Warning": "Continuous loading target depends on redundancy, ambient, harmonics, cooling and utility/project requirements.",
       "Source / basis": "IEC 60076 series; manufacturer loading guide.",
-      "Reference table": "Design approach / Typical intent | Normal single transformer / Allow project growth margin | N+1 arrangement / Check outage loading | High harmonics / Consider derating/K-factor study"
+      "Reference table": "Design approach / Typical intent | Normal single transformer / Allow project growth margin | N+1 arrangement / Check outage loading | High harmonics / Consider derating/K-factor study",
+      "Formula / equation": "Loading% = Sdesign / (Srated × number of units) × 100."
     },
     {
       "ID": "vector_group",
@@ -110,7 +120,8 @@
       "Worked example": "Dyn11 is common for MV/LV distribution, but project and utility requirements govern.",
       "Warning": "Transformers operated in parallel must have compatible ratio, vector group, impedance and tap position.",
       "Source / basis": "IEC 60076-1.",
-      "Reference table": "Example / Meaning | Dyn11 / HV delta, LV star with neutral, clock 11 | YNyn0 / Both star with neutrals; zero displacement | Custom / Verify system study"
+      "Reference table": "Example / Meaning | Dyn11 / HV delta, LV star with neutral, clock 11 | YNyn0 / Both star with neutrals; zero displacement | Custom / Verify system study",
+      "Formula / equation": "Clock displacement angle = clock number × 30°. Parallel compatibility also requires matching ratio, impedance, polarity and tap position."
     },
     {
       "ID": "voltage_drop",
@@ -120,7 +131,8 @@
       "Worked example": "At MV, reactance can be significant, especially for long routes.",
       "Warning": "The acceptable limit is project- and system-study-specific; do not blindly use LV limits.",
       "Source / basis": "IEC engineering method; TNB steady-state voltage criteria.",
-      "Reference table": "Use / Preliminary guide | Internal feeder / Project criterion, often 1–3% | Utility connection / Coordinate with TNB ±5% network criterion | Motor starting / Separate transient study"
+      "Reference table": "Use / Preliminary guide | Internal feeder / Project criterion, often 1–3% | Utility connection / Coordinate with TNB ±5% network criterion | Motor starting / Separate transient study",
+      "Formula / equation": "ΔV = √3 × Irun × Lkm × (R × PF + X × √(1 − PF²)); VD% = ΔV / (VLL × 1000) × 100."
     },
     {
       "ID": "charging_current",
@@ -130,7 +142,8 @@
       "Worked example": "Long 33 kV cables can contribute significant MVAr and affect protection/earthing.",
       "Warning": "Use manufacturer capacitance for final calculation.",
       "Source / basis": "IEC 60287 parameters; manufacturer catalogue.",
-      "Reference table": "Route / Action | Short industrial feeder / Usually small but calculate | Long 22/33 kV route / Review reactive power/protection | Export cable / Specialist cable-system study"
+      "Reference table": "Route / Action | Short industrial feeder / Usually small but calculate | Long 22/33 kV route / Review reactive power/protection | Export cable / Specialist cable-system study",
+      "Formula / equation": "Ic = 2πf × C × L × Vph × n."
     },
     {
       "ID": "brand_filter",
@@ -140,7 +153,8 @@
       "Worked example": "Selecting TCI shows TCI-labelled product families, but final ratings still require the exact TCI catalogue/datasheet.",
       "Warning": "Brand selection does not mean TNB approval or current product availability.",
       "Source / basis": "Official manufacturer public product pages.",
-      "Reference table": "Selection / Use | Any brand / Engineering comparison across controlled records | Named brand / Limit results to that manufacturer family"
+      "Reference table": "Selection / Use | Any brand / Engineering comparison across controlled records | Named brand / Limit results to that manufacturer family",
+      "Formula / equation": "Filter condition: record brand = selected brand, or include every brand when “All brands” is selected."
     },
     {
       "ID": "data_status",
@@ -150,7 +164,8 @@
       "Worked example": "FAMILY VERIFIED / ENGINEERING REFERENCE means the product family exists, while electrical ratings require exact catalogue verification.",
       "Warning": "Do not issue procurement specifications from preliminary records without datasheet confirmation.",
       "Source / basis": "App data-governance policy.",
-      "Reference table": "Status / Meaning | Manufacturer verified / Exact catalogue/nameplate value captured | Engineering reference / Calculated or representative design value | Verify / Project or manufacturer confirmation required"
+      "Reference table": "Status / Meaning | Manufacturer verified / Exact catalogue/nameplate value captured | Engineering reference / Calculated or representative design value | Verify / Project or manufacturer confirmation required",
+      "Formula / equation": "No universal numerical equation. Output confidence is determined from source status, calculation basis, assumptions and outstanding verification."
     },
     {
       "ID": "conductor_material",
@@ -160,7 +175,8 @@
       "Worked example": "A 240 mm² copper XLPE conductor has a higher 1 s thermal withstand than a 240 mm² aluminium conductor because the applied k coefficient is higher.",
       "Warning": "Confirm lug material, bimetallic interfaces, jointing system and manufacturer construction.",
       "Source / basis": "IEC 60949 adiabatic principles; IEC 60228 conductor construction; manufacturer data.",
-      "Reference table": "Material / Typical app treatment | Copper / Lower resistance and k = 143 reference for XLPE screening | Aluminium / Larger area often required; k = 94 reference for XLPE screening"
+      "Reference table": "Material / Typical app treatment | Copper / Lower resistance and k = 143 reference for XLPE screening | Aluminium / Larger area often required; k = 94 reference for XLPE screening",
+      "Formula / equation": "Ith = k × S × n / √t. Current preliminary XLPE screening uses kCu = 143 and kAl = 94."
     },
     {
       "ID": "number_of_cores",
@@ -170,7 +186,8 @@
       "Worked example": "A high-current 33 kV feeder may use three single-core cables in trefoil, while a shorter lower-current 11 kV feeder may use one three-core armoured cable.",
       "Warning": "Do not apply magnetic steel wire armour around a single-core AC cable unless the manufacturer explicitly provides a suitable non-magnetic construction.",
       "Source / basis": "IEC 60502-2 cable construction and manufacturer installation instructions.",
-      "Reference table": "Arrangement / Common consideration | 1 Core / Trefoil/flat formation and screen bonding assessment | 3 Core / Integrated three-phase construction; generally SWA where armoured"
+      "Reference table": "Arrangement / Common consideration | 1 Core / Trefoil/flat formation and screen bonding assessment | 3 Core / Integrated three-phase construction; generally SWA where armoured",
+      "Formula / equation": "Electrical checks use the selected 1-core or 3-core record, its formation and the number of parallel runs."
     },
     {
       "ID": "cable_family",
@@ -180,7 +197,8 @@
       "Worked example": "Selecting an LSZH armoured family limits candidates to low-smoke outer-sheath constructions.",
       "Warning": "A family name confirms public product scope only unless the exact catalogue row is marked manufacturer verified.",
       "Source / basis": "Official manufacturer product pages and controlled source register.",
-      "Reference table": "Family attribute / Examples | Insulation / XLPE or EPR | Armour / AWA, SWA or unarmoured | Sheath / PVC, PE/MDPE or LSZH"
+      "Reference table": "Family attribute / Examples | Insulation / XLPE or EPR | Armour / AWA, SWA or unarmoured | Sheath / PVC, PE/MDPE or LSZH",
+      "Formula / equation": "No universal equation. The selected construction controls insulation, armour, sheath, electrical data and applicable installation records."
     },
     {
       "ID": "cable_formation",
@@ -190,7 +208,8 @@
       "Worked example": "Trefoil generally provides more symmetrical phase spacing than flat formation.",
       "Warning": "Ampacity must ultimately follow the actual spacing, bonding and installation geometry in the manufacturer/IEC 60287 study.",
       "Source / basis": "IEC 60287 series and manufacturer installation data.",
-      "Reference table": "Formation / Typical use | Trefoil / Compact three-phase grouping | Flat / Tray, trench or spaced installation"
+      "Reference table": "Formation / Typical use | Trefoil / Compact three-phase grouping | Flat / Tray, trench or spaced installation",
+      "Formula / equation": "Voltage drop uses the formation-specific reactance X; sheath/screen effects depend on conductor spacing and bonding."
     },
     {
       "ID": "parallel_runs",
@@ -200,7 +219,8 @@
       "Worked example": "Two equal 240 mm² runs per phase are screened as sharing half the phase current each.",
       "Warning": "Equal sharing requires equal conductor length, size, material, formation, termination and impedance.",
       "Source / basis": "IEC installation principles and good engineering practice.",
-      "Reference table": "Runs per phase / Required check | 1 / Single circuit calculation | 2 or more / Equal sharing, grouping and circulating-current verification"
+      "Reference table": "Runs per phase / Required check | 1 / Single circuit calculation | 2 or more / Equal sharing, grouping and circulating-current verification",
+      "Formula / equation": "Irun = Iphase / n; Iz,total = Itab × Ctotal × n."
     },
     {
       "ID": "ambient_temperature",
@@ -210,7 +230,8 @@
       "Worked example": "An air-installed XLPE cable at 45 °C receives a lower correction factor than the same cable at 30 °C.",
       "Warning": "Use the project design temperature and the exact manufacturer/standard correction table for final issue.",
       "Source / basis": "IEC 60287 thermal principles and IEC 60364-style correction concepts used only as preliminary screening.",
-      "Reference table": "Environment / App reference | Air / 30 °C | Soil / 25 °C"
+      "Reference table": "Environment / App reference | Air / 30 °C | Soil / 25 °C",
+      "Formula / equation": "Iz = Itab × Cambient × other correction factors × n."
     },
     {
       "ID": "transformer_type",
@@ -220,7 +241,8 @@
       "Worked example": "A dry-type transformer may be preferred indoors where oil containment is undesirable, subject to ventilation and fire strategy.",
       "Warning": "Final selection must consider authority, insurer, fire code, room ventilation, noise and environmental requirements.",
       "Source / basis": "IEC 60076-1 and IEC 60076-11; manufacturer data.",
-      "Reference table": "Type / Typical cooling | Oil Immersed / ONAN / ONAF | Dry Type / AN / AF"
+      "Reference table": "Type / Typical cooling | Oil Immersed / ONAN / ONAF | Dry Type / AN / AF",
+      "Formula / equation": "No universal equation. Construction determines insulation medium, cooling, fire strategy and internal protection applicability."
     },
     {
       "ID": "demand_factor",
@@ -230,7 +252,8 @@
       "Worked example": "800 kW connected load at 0.9 demand factor contributes 720 kW before power-factor and efficiency conversion.",
       "Warning": "Base the factor on measured profiles, equipment duty, client criteria or an approved load schedule—not a generic guess.",
       "Source / basis": "Project load assessment and utility maximum-demand practice.",
-      "Reference table": "Factor / Interpretation | 1.00 / All connected load assumed coincident | 0.80 / 80% coincident design demand | <0.60 / Requires strong project evidence"
+      "Reference table": "Factor / Interpretation | 1.00 / All connected load assumed coincident | 0.80 / 80% coincident design demand | <0.60 / Requires strong project evidence",
+      "Formula / equation": "Sbase = Pconnected × DF / (PF × η)."
     },
     {
       "ID": "future_growth",
@@ -240,7 +263,8 @@
       "Worked example": "A 900 kVA base demand with 15% growth becomes 1,035 kVA before other allowances.",
       "Warning": "Avoid double-counting growth already included in the connected-load schedule.",
       "Source / basis": "Project planning criteria and client-approved expansion forecast.",
-      "Reference table": "Growth / Planning interpretation | 0% / No reserved expansion | 10–20% / Common preliminary allowance | >25% / Confirm staged or master-plan basis"
+      "Reference table": "Growth / Planning interpretation | 0% / No reserved expansion | 10–20% / Common preliminary allowance | >25% / Confirm staged or master-plan basis",
+      "Formula / equation": "Sgrowth = Sbase × (1 + growth% / 100)."
     },
     {
       "ID": "harmonic_factor",
@@ -250,7 +274,8 @@
       "Worked example": "A factor of 1.10 adds 10% capacity allowance before standard rating selection.",
       "Warning": "This is not a harmonic load-flow or K-factor calculation. Obtain harmonic spectra and perform a dedicated study for material nonlinear loads.",
       "Source / basis": "IEC 60076 loading/loss concepts and project harmonic study.",
-      "Reference table": "Factor / Use | 1.00 / No additional allowance | 1.05–1.15 / Preliminary nonlinear-load allowance | Study required / High VFD/UPS/data-centre concentration"
+      "Reference table": "Factor / Use | 1.00 / No additional allowance | 1.05–1.15 / Preliminary nonlinear-load allowance | Study required / High VFD/UPS/data-centre concentration",
+      "Formula / equation": "Sdesign = Sgrowth × Kharmonic × Kmotor-starting."
     },
     {
       "ID": "redundancy",
@@ -260,7 +285,8 @@
       "Worked example": "Two 1,000 kVA units carrying 1,200 kVA operate at 60% each normally and 120% on the remaining unit during outage.",
       "Warning": "Emergency loading duration, thermal history, switching, protection and maintenance philosophy require project-specific confirmation.",
       "Source / basis": "IEC 60076 loading principles and client reliability criteria.",
-      "Reference table": "Mode / Sizing requirement | Single unit / One unit carries design demand | N+1 — two units / Each unit screened against full outage demand"
+      "Reference table": "Mode / Sizing requirement | Single unit / One unit carries design demand | N+1 — two units / Each unit screened against full outage demand",
+      "Formula / equation": "Normal loading% = Sdesign / (Srated × N) × 100; outage loading% = Sdesign / [Srated × max(N − 1, 1)] × 100."
     },
     {
       "ID": "cooling_class",
@@ -270,7 +296,8 @@
       "Worked example": "ONAN means oil natural circulation and air natural cooling; AN means air natural cooling for dry type.",
       "Warning": "Forced cooling ratings are valid only with the specified fans, controls and duty.",
       "Source / basis": "IEC 60076 series cooling designations and manufacturer data.",
-      "Reference table": "Code / Meaning | ONAN / Oil natural / air natural | ONAF / Oil natural / air forced | AN / Air natural dry type | AF / Air forced dry type"
+      "Reference table": "Code / Meaning | ONAN / Oil natural / air natural | ONAF / Oil natural / air forced | AN / Air natural dry type | AF / Air forced dry type",
+      "Formula / equation": "No universal sizing equation. Cooling class determines the permitted thermal duty and must match the exact transformer rating/nameplate."
     },
     {
       "ID": "protection_profile",
@@ -280,7 +307,8 @@
       "Worked example": "The critical-facility profile prefers a VCB and increased duty margin even for a smaller transformer.",
       "Warning": "A profile is not a utility approval or final protection philosophy.",
       "Source / basis": "IEC 62271, IEC 60947-2, TNB/project protection practices.",
-      "Reference table": "Profile / Intended use | Malaysia / IEC preliminary / Ordinary preliminary design | Critical facility / Conservative continuity and protection preference"
+      "Reference table": "Profile / Intended use | Malaysia / IEC preliminary / Ordinary preliminary design | Critical facility / Conservative continuity and protection preference",
+      "Formula / equation": "Controlled rating margins and selection preferences are applied to the calculated current and fault-duty requirements."
     },
     {
       "ID": "mv_device_strategy",
@@ -290,7 +318,8 @@
       "Worked example": "A single non-critical 500 kVA transformer may be screened for switch-fuse; parallel or critical units prefer VCB.",
       "Warning": "Do not use a universal kVA boundary as a final rule. Verify utility and fuse-manufacturer coordination.",
       "Source / basis": "IEC 62271-100; IEC 60282-1; TNB/project requirements.",
-      "Reference table": "Strategy / Meaning | Auto / Risk-based preliminary preference | VCB / Numerical relay and breaker | Switch-fuse / Manufacturer-coordinated fuse links"
+      "Reference table": "Strategy / Meaning | Auto / Risk-based preliminary preference | VCB / Numerical relay and breaker | Switch-fuse / Manufacturer-coordinated fuse links",
+      "Formula / equation": "Selection logic uses transformer rating, number of units, criticality, enhanced protection and availability of a coordinated fuse solution."
     },
     {
       "ID": "mv_fault_duty",
@@ -300,7 +329,8 @@
       "Worked example": "A 20 kA system requires a VCB and switchboard rated at least 20 kA for the specified duration.",
       "Warning": "Use the maximum and minimum utility fault cases, actual relay clearing and backup duration.",
       "Source / basis": "IEC 60909-0; IEC 62271-100; TNB system information.",
-      "Reference table": "Common screening ratings / kA | 20 | 25 | 31.5 | 40 | 50"
+      "Reference table": "Screening duty / Typical standard rating | Level 1 / 20 kA | Level 2 / 25 kA | Level 3 / 31.5 kA | Level 4 / 40 kA | Level 5 / 50 kA",
+      "Formula / equation": "Required breaking current ≥ Ik,max; required short-time withstand satisfies Irated² × trated ≥ Ik² × trequired."
     },
     {
       "ID": "vcb_selection",
@@ -310,7 +340,8 @@
       "Worked example": "An 11 kV, 20 kA feeder normally screens to a 12 kV VCB with at least 20 kA duty and 630 A continuous current.",
       "Warning": "Output is a required rating envelope, not an exact purchasable model. Verify panel type tests and manufacturer data.",
       "Source / basis": "IEC 62271-100:2021+AMD1:2024 CSV.",
-      "Reference table": "Parameter / Check | Rated voltage / ≥ Um | Continuous current / ≥ design current and panel rating | Breaking current / ≥ maximum fault | Short-time withstand / ≥ thermal duty"
+      "Reference table": "Parameter / Check | Rated voltage / ≥ Um | Continuous current / ≥ design current and panel rating | Breaking current / ≥ maximum fault | Short-time withstand / ≥ thermal duty",
+      "Formula / equation": "Ur ≥ Um; Ir ≥ Iload; Ibreak ≥ Ik,max; and Irated² × trated ≥ Ik² × trequired."
     },
     {
       "ID": "mv_fuse_selection",
@@ -320,7 +351,8 @@
       "Worked example": "A transformer primary current of 52.5 A may screen to a higher fuse rating after applying an inrush allowance.",
       "Warning": "Final selection requires the exact transformer inrush, fuse time-current curve, minimum melting, maximum clearing and switch-fuse compatibility.",
       "Source / basis": "IEC 60282-1:2020 and manufacturer coordination tables.",
-      "Reference table": "Required check / Evidence | Inrush withstand / Transformer energisation curve | Fault clearing / Fuse curve | Low-current interruption / Fuse type | Striker / Switch trip compatibility"
+      "Reference table": "Required check / Evidence | Inrush withstand / Transformer energisation curve | Fault clearing / Fuse curve | Low-current interruption / Fuse type | Striker / Switch trip compatibility",
+      "Formula / equation": "Ifuse,start ≈ Iprimary × inrush allowance, then round upward to a controlled rating; final selection requires manufacturer time-current curves."
     },
     {
       "ID": "ct_selection",
@@ -330,7 +362,8 @@
       "Worked example": "52.5 A at an 80% target gives 65.6 A; the next standard ratio may be 75/1 A.",
       "Warning": "Differential and REF protection require class, burden, lead resistance, ALF and saturation/knee-point calculations.",
       "Source / basis": "IEC 61869-2; relay manufacturer application guides.",
-      "Reference table": "Application / Preliminary class | OC/EF / 5P20 or project specification | Differential/REF / PX/PS or manufacturer-specified class | Metering / Separate metering core"
+      "Reference table": "Application / Preliminary class | OC/EF / 5P20 or project specification | Differential/REF / PX/PS or manufacturer-specified class | Metering / Separate metering core",
+      "Formula / equation": "CT primary rating ≥ Iload / target utilisation."
     },
     {
       "ID": "relay_functions",
@@ -340,7 +373,8 @@
       "Worked example": "A standard VCB feeder may receive 50/51, 50N/51N, 49 and 74TCS; a critical large transformer may add 87T and 64REF.",
       "Warning": "Final pickup, curve, delay and trip matrix require a coordination study and utility approval.",
       "Source / basis": "IEC 60255 series; IEC 60076; project/TNB requirements.",
-      "Reference table": "Function / Purpose | 50/51 / Phase overcurrent | 50N/51N / Earth fault | 49 / Thermal | 87T / Differential | 64REF / Restricted earth fault"
+      "Reference table": "Function / Purpose | 50/51 / Phase overcurrent | 50N/51N / Earth fault | 49 / Thermal | 87T / Differential | 64REF / Restricted earth fault",
+      "Formula / equation": "Pickup and time settings require minimum/maximum fault, transformer inrush, CT performance and grading calculations; function selection alone is not a final setting."
     },
     {
       "ID": "acb_selection",
@@ -350,7 +384,8 @@
       "Worked example": "A 1,000 kVA, 415 V transformer has about 1,391 A full-load current and may screen to a 1,600 A frame.",
       "Warning": "Frame rating is not the long-time setting. Verify Icu, Ics, Icw, busbar/cable capacity and discrimination at the actual voltage.",
       "Source / basis": "IEC 60947-2:2024.",
-      "Reference table": "Item / Meaning | In / Frame or rated current | Ir / Long-time pickup | Isd / Short-time pickup | Ii / Instantaneous pickup | Ig / Ground-fault pickup"
+      "Reference table": "Item / Meaning | In / Frame or rated current | Ir / Long-time pickup | Isd / Short-time pickup | Ii / Instantaneous pickup | Ig / Ground-fault pickup",
+      "Formula / equation": "In and Ir must cover design current; Icu/Ics must cover prospective fault current; Icw must cover the short-time duty."
     },
     {
       "ID": "acb_lsig",
@@ -360,7 +395,8 @@
       "Worked example": "Ir may start near transformer full-load current, while Isd and delays are coordinated with outgoing devices.",
       "Warning": "Never issue final settings without exact trip-unit ranges, transformer inrush, fault study and manufacturer discrimination tables.",
       "Source / basis": "IEC 60947-2; manufacturer trip-unit and selectivity documentation.",
-      "Reference table": "Element / Preliminary role | L / Overload | S / Delayed short circuit | I / High-current instantaneous | G / Ground fault"
+      "Reference table": "Element / Preliminary role | L / Overload | S / Delayed short circuit | I / High-current instantaneous | G / Ground fault",
+      "Formula / equation": "Ib ≤ Ir ≤ Iz; Isd > Ir; Ii > Isd or OFF; Ig and tg require an earth-fault and discrimination study."
     },
     {
       "ID": "internal_tx_protection",
@@ -370,7 +406,8 @@
       "Worked example": "An oil transformer may require temperature, pressure and gas-actuated protection; dry type uses winding-temperature monitoring.",
       "Warning": "Actual available contacts, alarm/trip stages and lockout logic must follow the manufacturer schematic and project cause-and-effect matrix.",
       "Source / basis": "IEC 60076-22-1; IEC 60076-11; manufacturer documentation.",
-      "Reference table": "Type / Typical items | Oil immersed / Buchholz, pressure relief, OTI, WTI, oil level | Dry type / Temperature controller, fans, ventilation"
+      "Reference table": "Type / Typical items | Oil immersed / Buchholz, pressure relief, OTI, WTI, oil level | Dry type / Temperature controller, fans, ventilation",
+      "Formula / equation": "No universal equation. Device applicability follows transformer construction, rating, winding arrangement and manufacturer design."
     },
     {
       "ID": "protection_status",
@@ -380,7 +417,85 @@
       "Worked example": "A 25 kA ACB on a calculated 30 kA bus is FAIL. A 50 kA ACB may remain VERIFY pending Ics/Icw and selectivity.",
       "Warning": "VERIFY is not approval. The app intentionally does not claim final discrimination without curves.",
       "Source / basis": "Engineering safeguard policy.",
-      "Reference table": "Status / Meaning | PASS / Entered numerical checks pass | VERIFY / Plausible but confirmation required | FAIL / Inadequate | NOT ASSESSED / Missing/invalid input"
+      "Reference table": "Status / Meaning | PASS / Entered numerical checks pass | VERIFY / Plausible but confirmation required | FAIL / Inadequate | NOT ASSESSED / Missing/invalid input",
+      "Formula / equation": "PASS: numerical envelope satisfied. VERIFY: plausible but external confirmation remains. FAIL: a required rating/check is inadequate. NOT ASSESSED: input is missing or invalid."
+    },
+    {
+      "ID": "database_search",
+      "Title": "Engineering database search",
+      "Explanation": "Searches the active cable, transformer or protection dataset using the entered text together with every selected filter.",
+      "How app uses it": "The app converts the query to lower case and applies a logical AND between the text match and active category filters.",
+      "Formula / equation": "Match = TextMatch(query, searchable fields) AND BrandFilter AND Family/Type/CategoryFilter AND other active filters.",
+      "Worked example": "Query = 11 kV, Brand = All brands, Family = XLPE. A record appears only when its searchable fields contain 11 kV and its family is XLPE.",
+      "Warning": "A text match does not prove technical suitability. Open the record and verify voltage class, construction, ratings, source status and project conditions.",
+      "Source / basis": "Application database-filter contract; controlled record metadata.",
+      "Reference table": "Control / Effect | Search text / Matches ID, brand, family or type, rating and selected technical fields | Dropdown filter / Narrows records by an exact controlled category | All option / Removes that category restriction"
+    },
+    {
+      "ID": "protection_category",
+      "Title": "Protection database category",
+      "Explanation": "Selects the protection or switchgear record category to inspect, such as VCB, ACB, fuse, RMU or requirement records.",
+      "How app uses it": "The selected category is applied as an exact filter before the matched record count and cards are rebuilt.",
+      "Formula / equation": "Displayed records = All protection records WHERE category = selected category; All categories removes this predicate.",
+      "Worked example": "Selecting VCB requirement displays only controlled VCB requirement records; selecting All categories restores every protection category.",
+      "Warning": "A database category is not a final product selection. Verify service voltage, rated current, breaking duty, short-time withstand, trip unit, CT and coordination.",
+      "Source / basis": "Controlled MVTX protection database classification.",
+      "Reference table": "Category / Typical content | VCB requirement / Voltage, current, breaking and short-time duty envelope | ACB requirement / Frame, sensor, Icu, Ics, Icw and poles | MV fuse requirement / Preliminary fuse-current starting point | Product family / Manufacturer family reference requiring exact model verification"
+    },
+    {
+      "ID": "cable_loading",
+      "Title": "Cable loading result",
+      "Explanation": "Compares the calculated design current with the total derated current-carrying capacity of all parallel runs.",
+      "How app uses it": "The app divides design current by derated ampacity and reports a percentage. Values above 100% fail the preliminary ampacity check.",
+      "Formula / equation": "Loading% = Idesign / Iz,total × 100; Iz,total = Itable × Ctotal × number of parallel runs.",
+      "Worked example": "Idesign = 82 A and Iz,total = 100 A gives Loading = 82 / 100 × 100 = 82%.",
+      "Warning": "A pass does not validate installation assumptions, conductor temperature, grouping, soil thermal conditions, screen/sheath losses or manufacturer ratings.",
+      "Source / basis": "IEC 60287 thermal-rating principles and controlled manufacturer reference data.",
+      "Reference table": "Result / Meaning | At or below 100% / Preliminary ampacity envelope passes | Above 100% / Cable current-carrying capacity is insufficient | Close to 100% / Review practical margin, data accuracy and future loading"
+    },
+    {
+      "ID": "cable_loss",
+      "Title": "MV cable conductor loss",
+      "Explanation": "Estimates three-phase conductor I²R loss at the selected cable resistance, route length and number of parallel runs.",
+      "How app uses it": "The total current is divided across parallel runs; loss is calculated for each run and summed across the three phases.",
+      "Formula / equation": "Ploss = 3 × (Idesign / n)² × R90 × Lkm × n / 1000.",
+      "Worked example": "For 100 A, 2 runs, R90 = 0.20 Ω/km and L = 0.5 km: Ploss = 3 × 50² × 0.20 × 0.5 × 2 / 1000 = 1.5 kW.",
+      "Warning": "This is a conductor-loss estimate. Screen/sheath/armour, dielectric, joint and harmonic losses require the appropriate cable-system model.",
+      "Source / basis": "Three-phase I²R loss relationship; cable R90 from the controlled record.",
+      "Reference table": "Input or output / Unit or basis | Current / A divided equally across parallel runs | Resistance / Ω/km at the controlled conductor temperature | Length / km one-way route | Output / kW total three-phase conductor loss"
+    },
+    {
+      "ID": "transformer_losses",
+      "Title": "Transformer operating loss",
+      "Explanation": "Combines no-load loss and load loss scaled by the square of the operating load fraction.",
+      "How app uses it": "No-load loss is applied per energised unit. Reference load loss is multiplied by load fraction squared for each unit.",
+      "Formula / equation": "Ptotal = P0 × N + Pk × x² × N; x = Sdesign / (Srated × N).",
+      "Worked example": "P0 = 1.2 kW, Pk = 10 kW, N = 1 and x = 0.8 gives Ptotal = 1.2 + 10 × 0.8² = 7.6 kW.",
+      "Warning": "Use guaranteed manufacturer losses and the applicable reference temperature/load point for procurement or lifecycle studies.",
+      "Source / basis": "Transformer loss model using controlled no-load and load-loss references.",
+      "Reference table": "Term / Meaning | P0 / No-load or core loss per energised unit | Pk / Reference load or copper loss per unit | x / Per-unit loading | Ptotal / Approximate operating loss"
+    },
+    {
+      "ID": "transformer_efficiency",
+      "Title": "Transformer operating efficiency",
+      "Explanation": "Estimates operating efficiency from active output and the calculated transformer loss at the current design demand.",
+      "How app uses it": "The app converts apparent demand to active output using power factor, then divides output by output plus loss.",
+      "Formula / equation": "η% = Pout / (Pout + Ploss) × 100; Pout = Sdesign × PF.",
+      "Worked example": "Sdesign = 800 kVA, PF = 0.9 and Ploss = 8 kW gives Pout = 720 kW and η = 720 / 728 × 100 = 98.90%.",
+      "Warning": "This is a preliminary operating-point estimate, not an IEC efficiency declaration or guaranteed manufacturer value.",
+      "Source / basis": "Power-balance relationship using the controlled transformer loss model.",
+      "Reference table": "Item / Review | Active output / Sdesign × PF | Input power / Pout + Ploss | Efficiency / Pout divided by input power × 100 | Final issue / Use guaranteed loss data and the specified loading profile"
+    },
+    {
+      "ID": "transformer_regulation",
+      "Title": "Transformer voltage regulation estimate",
+      "Explanation": "Estimates voltage regulation by resolving percentage impedance into resistive and reactive components.",
+      "How app uses it": "Resistance percentage is estimated from load loss and rating. Reactance is derived from impedance, then combined with power factor.",
+      "Formula / equation": "R% = Pk / Srated × 100; X% = √(Z%² − R%²); Reg% ≈ R% × PF + X% × sinφ.",
+      "Worked example": "For Z = 6%, R = 1%, PF = 0.9: X ≈ 5.916% and Reg ≈ 1 × 0.9 + 5.916 × 0.436 = 3.48%.",
+      "Warning": "Actual terminal voltage depends on taps, network voltage, load angle, temperature and exact manufacturer impedance/loss data.",
+      "Source / basis": "Approximate transformer regulation relationship using controlled reference data.",
+      "Reference table": "Term / Meaning | R% / Resistive impedance component | X% / Reactive impedance component | PF and sinφ / Load-angle components | Reg% / Preliminary voltage-regulation estimate"
     }
   ]
 }

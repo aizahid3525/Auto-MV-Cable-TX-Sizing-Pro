@@ -8,12 +8,30 @@ protection/switchgear selection.
 
 - App name: **Auto MV Cable & TX Sizing Pro**
 - Package ID: `com.aizahid.auto_mv_cable_tx_sizing_pro`
-- Version: `1.1.0+3`
+- Version: `1.1.0+4`
 - Calculation engine: `MVTX-CALC-V1`
 - Protection engine: `MVTX-PROTECTION-V1`
 - Brand: **AiZahid**
-- Theme: **Navy / blue / cyan**, with persistent responsive light and dark modes
+- Theme: **Professional fuchsia / purple**, with persistent responsive light and dark modes
 
+
+## Rev4 user-interface and engineering-helper update
+
+- Professional fuchsia/purple application theme across light and dark modes.
+- Engineering Database filters and matched records now share one `CustomScrollView`, so every filter remains reachable on small phones while the bottom navigation stays fixed.
+- Dashboard database statistics use an icon/arrow top row with the count and full-width label below, preventing narrow-card word fragmentation.
+- Every input helper uses `?`; calculated and database-derived outputs use `i`.
+- Helper dialogs include governing equations, current-value substitutions, live pass/verify traces where applicable, and responsive reference tables.
+- Microsoft Store MSIX identity is controlled by `Package.appxmanifest`, with an x64 MSIX build added to the Windows GitHub Actions workflow.
+
+### Microsoft Store identity
+
+- Identity name: `AiZahid.AutoMVCableTXSizingPro`
+- Publisher: `CN=A0E77901-C4C9-4DDA-9126-02F6FC3FDA15`
+- Publisher display name: `AiZahid`
+- Store package version: `1.1.0.0`
+
+See `docs/MICROSOFT_STORE_MSIX.md` for CI packaging and optional signing secrets.
 
 ## Modern UI and navigation update
 
@@ -25,7 +43,7 @@ protection/switchgear selection.
 - Responsive two-column card system across input and result grids.
 - Height-matched paired cards; an unpaired final card spans the complete two-column width.
 - Input guidance uses the question-mark icon only. Calculated and database-derived outputs use the information icon.
-- Engineering databases and formulas remain unchanged by this UI-only revision.
+- Core cable, transformer and protection calculation engines remain unchanged; helper guidance is upgraded to live equation traces and tabular references.
 
 ## Included engineering workflows
 
@@ -111,6 +129,8 @@ secrets and verification of the signed AAB.
 ### Windows outputs
 
 - Portable Windows ZIP
+- Microsoft Store x64 MSIX: `Auto_MV_Cable_TX_Sizing_Pro_1.1.0.0_x64.msix`
+- Controlled `Package.appxmanifest` and Store tile assets
 - Obfuscation symbols
 
 ## Local commands

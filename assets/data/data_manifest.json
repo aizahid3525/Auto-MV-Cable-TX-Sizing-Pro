@@ -4,8 +4,8 @@
   "records": [
     {
       "File": "help_content.json",
-      "SHA-256": "8917ee86952c11443493d8c7697e732509250fd61815bd125f9dafc8f58a6cd8",
-      "Schema": "MVTX-HELP-V1",
+      "SHA-256": "96bbbc7518d434d722335502eeb2c09285b233704a078bb5528c70597618af14",
+      "Schema": "MVTX-HELP-V2",
       "Generated on": "2026-07-29"
     },
     {

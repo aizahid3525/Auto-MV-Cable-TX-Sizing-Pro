@@ -3,49 +3,50 @@ import 'package:flutter/material.dart';
 class AppTheme {
   const AppTheme._();
 
-  static const Color navy = Color(0xFF173278);
-  static const Color blue = Color(0xFF2457E6);
-  static const Color cyan = Color(0xFF11C5D9);
-  static const Color cyanDark = Color(0xFF087F99);
-  static const Color teal = Color(0xFF0F766E);
+  // Controlled professional fuchsia palette. Existing aliases are retained so
+  // legacy widgets inherit the new identity without duplicating colour logic.
+  static const Color navy = Color(0xFF581C87);
+  static const Color blue = Color(0xFFC026D3);
+  static const Color cyan = Color(0xFFF0ABFC);
+  static const Color cyanDark = Color(0xFFA21CAF);
+  static const Color teal = Color(0xFF86198F);
 
-  // Backward-compatible aliases retained for existing engineering widgets.
   static const Color fuchsia = blue;
   static const Color fuchsiaBright = cyan;
   static const Color fuchsiaDark = navy;
 
   static ThemeData light() {
     final scheme = ColorScheme.fromSeed(
-      seedColor: blue,
+      seedColor: fuchsia,
       brightness: Brightness.light,
       surface: Colors.white,
     ).copyWith(
-      primary: blue,
+      primary: fuchsia,
       secondary: cyanDark,
-      tertiary: teal,
+      tertiary: const Color(0xFFE879F9),
       surface: Colors.white,
-      surfaceContainerLowest: const Color(0xFFF8FAFD),
-      surfaceContainerLow: const Color(0xFFF1F5F9),
-      outlineVariant: const Color(0xFFDDE5EF),
+      surfaceContainerLowest: const Color(0xFFFFFBFF),
+      surfaceContainerLow: const Color(0xFFFDF4FF),
+      outlineVariant: const Color(0xFFEAD7EF),
     );
-    return _theme(scheme, const Color(0xFFF4F7FB));
+    return _theme(scheme, const Color(0xFFFBF7FC));
   }
 
   static ThemeData dark() {
     final scheme = ColorScheme.fromSeed(
-      seedColor: cyan,
+      seedColor: fuchsiaBright,
       brightness: Brightness.dark,
-      surface: const Color(0xFF0F172A),
+      surface: const Color(0xFF1B1020),
     ).copyWith(
-      primary: const Color(0xFF60A5FA),
-      secondary: const Color(0xFF22D3EE),
-      tertiary: const Color(0xFF5EEAD4),
-      surface: const Color(0xFF0F172A),
-      surfaceContainerLowest: const Color(0xFF111B2E),
-      surfaceContainerLow: const Color(0xFF172033),
-      outlineVariant: const Color(0xFF334155),
+      primary: const Color(0xFFF0ABFC),
+      secondary: const Color(0xFFE879F9),
+      tertiary: const Color(0xFFF5D0FE),
+      surface: const Color(0xFF1B1020),
+      surfaceContainerLowest: const Color(0xFF211226),
+      surfaceContainerLow: const Color(0xFF2B1732),
+      outlineVariant: const Color(0xFF5A3564),
     );
-    return _theme(scheme, const Color(0xFF07111F));
+    return _theme(scheme, const Color(0xFF120A16));
   }
 
   static ThemeData _theme(ColorScheme scheme, Color scaffold) {
@@ -95,7 +96,7 @@ class AppTheme {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
           borderSide: BorderSide(
-            color: isDark ? const Color(0xFF22D3EE) : cyanDark,
+            color: isDark ? const Color(0xFFF0ABFC) : cyanDark,
             width: 1.8,
           ),
         ),
@@ -103,7 +104,7 @@ class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         height: 74,
         backgroundColor: scheme.surface,
-        indicatorColor: isDark ? const Color(0xFF164E63) : const Color(0xFFDBEAFE),
+        indicatorColor: isDark ? const Color(0xFF701A75) : const Color(0xFFFAE8FF),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           return TextStyle(
             fontWeight: states.contains(WidgetState.selected)
@@ -115,13 +116,22 @@ class AppTheme {
       ),
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: scheme.surface,
-        indicatorColor: isDark ? const Color(0xFF164E63) : const Color(0xFFDBEAFE),
+        indicatorColor: isDark ? const Color(0xFF701A75) : const Color(0xFFFAE8FF),
         selectedIconTheme: IconThemeData(color: scheme.primary),
         selectedLabelTextStyle: TextStyle(
           color: scheme.primary,
           fontWeight: FontWeight.w900,
         ),
       ),
+      tabBarTheme: TabBarThemeData(
+        labelColor: scheme.primary,
+        unselectedLabelColor: scheme.onSurfaceVariant,
+        indicatorColor: scheme.primary,
+        dividerColor: scheme.outlineVariant,
+        labelStyle: const TextStyle(fontWeight: FontWeight.w900),
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: scheme.primary),
       dividerTheme: DividerThemeData(color: scheme.outlineVariant),
     );
   }

@@ -38,9 +38,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final repo = EngineeringRepository.instance;
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 32),
-      child: Column(
+    return EngineeringHelpScope(
+      values: <String, Object?>{
+        'cableRecordCount': repo.cables.length,
+        'transformerRecordCount': repo.transformers.length,
+        'protectionRecordCount': repo.protectionDevices.length,
+        'standardRecordCount': repo.standards.length,
+        'matchedRecordCount': repo.cables.length +
+            repo.transformers.length +
+            repo.protectionDevices.length,
+        'dataStatus': 'Controlled engineering databases loaded',
+      },
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(18, 18, 18, 32),
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const _ModernHeroCard(),
@@ -83,7 +94,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -468,28 +480,28 @@ class _DatabaseReferenceCard extends StatelessWidget {
             icon: Icons.cable_outlined,
             value: cableCount,
             label: 'MV cable records',
-            color: const Color(0xFF2563EB),
+            color: const Color(0xFFC026D3),
             onTap: onOpenDatabase,
           ),
           _MetricCard(
             icon: Icons.electrical_services_outlined,
             value: transformerCount,
             label: 'Transformer records',
-            color: const Color(0xFF059669),
+            color: const Color(0xFFA21CAF),
             onTap: onOpenDatabase,
           ),
           _MetricCard(
             icon: Icons.security_outlined,
             value: protectionCount,
             label: 'Protection records',
-            color: const Color(0xFF7C3AED),
+            color: const Color(0xFF7E22CE),
             onTap: onOpenDatabase,
           ),
           _MetricCard(
             icon: Icons.menu_book_outlined,
             value: sourceCount,
             label: 'Standards entries',
-            color: const Color(0xFFEA580C),
+            color: const Color(0xFFDB2777),
             onTap: onOpenDatabase,
           ),
         ],
@@ -513,55 +525,87 @@ class _MetricCard extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
 
+  String _formatCount(int count) {
+    if (count < 1000) {
+      return count.toString();
+    }
+    final thousands = count ~/ 1000;
+    final remainder = (count % 1000).toString().padLeft(3, '0');
+    return '$thousands,$remainder';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return InkWell(
       borderRadius: BorderRadius.circular(22),
       onTap: onTap,
       child: Container(
         width: double.infinity,
+        constraints: const BoxConstraints(minHeight: 154),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerLowest,
+          color: theme.colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+          border: Border.all(color: theme.colorScheme.outlineVariant),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.11),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Icon(icon, color: color, size: 25),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    value.toString(),
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      height: 1,
-                    ),
+            Row(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    label,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w700,
-                      height: 1.2,
-                    ),
+                  child: Icon(icon, color: color, size: 25),
+                ),
+                const Spacer(),
+                Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.10),
+                    shape: BoxShape.circle,
                   ),
-                ],
+                  child: Icon(
+                    Icons.arrow_forward_rounded,
+                    color: color,
+                    size: 21,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 13),
+            SizedBox(
+              width: double.infinity,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  _formatCount(value),
+                  maxLines: 1,
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    height: 1,
+                  ),
+                ),
               ),
             ),
-            Icon(Icons.chevron_right_rounded, color: color),
+            const SizedBox(height: 6),
+            Text(
+              label,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w800,
+                height: 1.18,
+              ),
+            ),
           ],
         ),
       ),
@@ -603,22 +647,22 @@ class _InteractiveCoverageCardState extends State<_InteractiveCoverageCard> {
   bool _detailsExpanded = false;
 
   static const _outerColors = <Color>[
-    Color(0xFF2563EB),
-    Color(0xFF06B6D4),
-    Color(0xFF7C3AED),
-    Color(0xFF14B8A6),
-    Color(0xFFF59E0B),
-    Color(0xFFEC4899),
-    Color(0xFF84CC16),
-    Color(0xFFF97316),
-    Color(0xFF6366F1),
-    Color(0xFF0EA5E9),
+    Color(0xFFC026D3),
+    Color(0xFFA21CAF),
+    Color(0xFFE879F9),
+    Color(0xFF7E22CE),
+    Color(0xFFF472B6),
+    Color(0xFFD946EF),
+    Color(0xFF9333EA),
+    Color(0xFFDB2777),
+    Color(0xFFF0ABFC),
+    Color(0xFF6B21A8),
   ];
   static const _innerColors = <Color>[
-    Color(0xFF22C55E),
-    Color(0xFFE879F9),
-    Color(0xFFFB7185),
-    Color(0xFF38BDF8),
+    Color(0xFF86198F),
+    Color(0xFFF5D0FE),
+    Color(0xFFBE185D),
+    Color(0xFFC084FC),
   ];
 
   List<_CoverageEntry> get _entries {
@@ -1483,7 +1527,7 @@ class _TipCard extends StatelessWidget {
             height: 48,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [AppTheme.cyan, Color(0xFF7C3AED)],
+                colors: [AppTheme.cyan, AppTheme.blue],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),

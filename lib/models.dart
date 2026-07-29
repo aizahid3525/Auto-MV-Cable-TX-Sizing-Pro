@@ -156,6 +156,7 @@ class HelpTopic {
     required this.title,
     required this.explanation,
     required this.usage,
+    required this.equation,
     required this.example,
     required this.warning,
     required this.source,
@@ -166,6 +167,7 @@ class HelpTopic {
   final String title;
   final String explanation;
   final String usage;
+  final String equation;
   final String example;
   final String warning;
   final String source;
@@ -176,6 +178,7 @@ class HelpTopic {
         title: json['Title']?.toString() ?? '',
         explanation: json['Explanation']?.toString() ?? '',
         usage: json['How app uses it']?.toString() ?? '',
+        equation: json['Formula / equation']?.toString() ?? '',
         example: json['Worked example']?.toString() ?? '',
         warning: json['Warning']?.toString() ?? '',
         source: json['Source / basis']?.toString() ?? '',

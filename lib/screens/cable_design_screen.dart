@@ -146,9 +146,11 @@ class _CableDesignScreenState extends State<CableDesignScreen> {
         ? null
         : EngineeringCalculations.evaluateCable(_input, selected);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(18),
-      child: Column(
+    return EngineeringHelpScope(
+      values: _helpValues(result),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(18),
+        child: Column(
         children: [
           const PageHeader(
             title: 'MV Cable Design',
@@ -335,9 +337,50 @@ class _CableDesignScreenState extends State<CableDesignScreen> {
           ),
           const SizedBox(height: 16),
           _resultSection(result),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Map<String, Object?> _helpValues(CableDesignResult? result) {
+    final selected = _selected;
+    return <String, Object?>{
+      'screen': 'cable',
+      'systemKv': _number(_systemKv),
+      'loadKva': _number(_loadKva),
+      'powerFactor': _number(_powerFactor),
+      'lengthM': _number(_lengthM),
+      'parallelRuns': _integer(_parallelRuns).toDouble(),
+      'deratingFactor': _number(_derating),
+      'voltageDropLimitPercent': _number(_vdLimit),
+      'faultCurrentKa': _number(_faultKa),
+      'faultTimeS': _number(_faultTime),
+      'installationMethod': _installationMethod,
+      'screenBonding': _screenBonding,
+      'brandFilter': _brand,
+      'cableBrand': selected?.brand,
+      'cableFamily': _family == 'All families' ? selected?.family : _family,
+      'numberOfCores': _cores == 'All cores' ? selected?.cores : _cores,
+      'conductorMaterial': _conductor,
+      'conductorMaterialSelected': selected?.conductor,
+      'selectedRecord': selected?.shortLabel,
+      'dataStatus': selected?.dataStatus,
+      'baseAmpacityA': selected?.ampacityFor(_installationMethod),
+      'resistanceOhmPerKm': selected?.resistanceOhmPerKm,
+      'reactanceOhmPerKm': selected?.reactanceTrefoilOhmPerKm,
+      'capacitanceUfPerKm': selected?.capacitanceUfPerKm,
+      'conductorSizeMm2': selected?.sizeMm2,
+      'designCurrentA': result?.designCurrentA,
+      'deratedAmpacityA': result?.deratedAmpacityA,
+      'loadingPercent': result?.loadingPercent,
+      'voltageDropV': result?.voltageDropV,
+      'voltageDropPercent': result?.voltageDropPercent,
+      'shortCircuitWithstandKa': result?.shortCircuitWithstandKa,
+      'chargingCurrentA': result?.chargingCurrentA,
+      'lossKw': result?.lossKw,
+      'overallStatus': result?.status.label,
+    };
   }
 
   Widget _resultSection(CableDesignResult? result) {

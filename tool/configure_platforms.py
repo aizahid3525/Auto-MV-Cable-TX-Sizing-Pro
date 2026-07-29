@@ -7,6 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 APP_NAME = 'Auto MV Cable & TX Sizing Pro'
 PACKAGE_ID = 'com.aizahid.auto_mv_cable_tx_sizing_pro'
 ANDROID_APP_LABEL = '@string/app_name'
+STORE_IDENTITY_NAME = 'AiZahid.AutoMVCableTXSizingPro'
+STORE_PUBLISHER = 'CN=A0E77901-C4C9-4DDA-9126-02F6FC3FDA15'
+STORE_PUBLISHER_DISPLAY_NAME = 'AiZahid'
+STORE_VERSION = '1.1.0.0'
 
 
 def replace(path: Path, old: str, new: str) -> None:
@@ -67,6 +71,32 @@ def configure_android() -> None:
 
 
 def configure_windows() -> None:
+    store_manifest = ROOT / 'Package.appxmanifest'
+    if not store_manifest.exists():
+        raise RuntimeError(f'Microsoft Store manifest is missing: {store_manifest}')
+    namespace = {'m': 'http://schemas.microsoft.com/appx/manifest/foundation/windows10'}
+    tree = ET.parse(store_manifest)
+    root = tree.getroot()
+    identity = root.find('m:Identity', namespace)
+    properties = root.find('m:Properties', namespace)
+    if identity is None or properties is None:
+        raise RuntimeError('Microsoft Store manifest identity/properties are missing.')
+    expected_identity = {
+        'Name': STORE_IDENTITY_NAME,
+        'Publisher': STORE_PUBLISHER,
+        'Version': STORE_VERSION,
+        'ProcessorArchitecture': 'x64',
+    }
+    for key, expected in expected_identity.items():
+        if identity.attrib.get(key) != expected:
+            raise RuntimeError(
+                f'Incorrect Microsoft Store Identity/{key}: '
+                f'{identity.attrib.get(key)!r}; expected {expected!r}'
+            )
+    publisher_display = properties.find('m:PublisherDisplayName', namespace)
+    if publisher_display is None or publisher_display.text != STORE_PUBLISHER_DISPLAY_NAME:
+        raise RuntimeError('Incorrect Microsoft Store PublisherDisplayName.')
+
     main_cpp = ROOT / 'windows/runner/main.cpp'
     if main_cpp.exists():
         text = main_cpp.read_text(encoding='utf-8')

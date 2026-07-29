@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap rescap">
+  <Identity
+    Name="AiZahid.AutoMVCableTXSizingPro"
+    Publisher="CN=A0E77901-C4C9-4DDA-9126-02F6FC3FDA15"
+    Version="1.1.0.0"
+    ProcessorArchitecture="x64" />
+  <Properties>
+    <DisplayName>Auto MV Cable &amp; TX Sizing Pro</DisplayName>
+    <PublisherDisplayName>AiZahid</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+    <Description>MV cable and transformer engineering design assistant</Description>
+  </Properties>
+  <Resources>
+    <Resource Language="en-US" />
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily
+      Name="Windows.Desktop"
+      MinVersion="10.0.19041.0"
+      MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+  <Applications>
+    <Application
+      Id="AutoMVCableTXSizingPro"
+      Executable="auto_mv_cable_tx_sizing_pro.exe"
+      EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="Auto MV Cable &amp; TX Sizing Pro"
+        Description="MV cable and transformer engineering design assistant"
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile
+          Wide310x150Logo="Assets\Wide310x150Logo.png"
+          Square310x310Logo="Assets\Square310x310Logo.png" />
+        <uap:SplashScreen
+          Image="Assets\SplashScreen.png"
+          BackgroundColor="#581C87" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

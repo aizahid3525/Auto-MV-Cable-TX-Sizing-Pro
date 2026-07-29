@@ -130,9 +130,11 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
         ? null
         : EngineeringCalculations.evaluateTransformer(_input, selected);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(18),
-      child: Column(
+    return EngineeringHelpScope(
+      values: _helpValues(result),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(18),
+        child: Column(
         children: [
           const PageHeader(
             title: 'Transformer Design',
@@ -283,9 +285,51 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
             const SizedBox(height: 16),
             _protectionPreview(result),
           ],
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Map<String, Object?> _helpValues(TransformerDesignResult? result) {
+    final selected = _selected;
+    return <String, Object?>{
+      'screen': 'transformer',
+      'connectedLoadKw': _number(_connectedKw),
+      'powerFactor': _number(_powerFactor),
+      'efficiency': _number(_efficiency),
+      'demandFactor': _number(_demandFactor),
+      'futureGrowthPercent': _number(_growth),
+      'harmonicFactor': _number(_harmonic),
+      'motorStartingFactor': _number(_motor),
+      'numberOfUnits': _integer(_units).toDouble(),
+      'primaryKv': selected?.primaryKv ?? _primaryKv,
+      'secondaryKv': selected?.secondaryKv,
+      'transformerRatingKva': selected?.ratedKva,
+      'selectedTransformerKva': selected?.ratedKva,
+      'transformerType': _type == 'All types' ? selected?.type : _type,
+      'transformerBrand': selected?.brand,
+      'brandFilter': _brand,
+      'selectedTransformer': selected?.shortLabel,
+      'selectedRecord': selected?.shortLabel,
+      'impedancePercent': selected?.impedancePercent,
+      'vectorGroup': selected?.vectorGroup,
+      'coolingClass': selected?.cooling,
+      'noLoadLossKw': selected?.noLoadLossKw,
+      'loadLossKw': selected?.loadLossKw,
+      'dataStatus': selected?.dataStatus,
+      'designDemandKva': result?.designDemandKva,
+      'normalLoadingPercent': result?.normalLoadingPercent,
+      'outageLoadingPercent': result?.outageLoadingPercent,
+      'primaryCurrentA': result?.primaryCurrentA,
+      'secondaryCurrentA': result?.secondaryCurrentA,
+      'approxFaultCurrentKa': result?.approxFaultCurrentKa,
+      'calculatedLvFaultKa': result?.approxFaultCurrentKa,
+      'totalLossKw': result?.totalLossKw,
+      'efficiencyPercent': result?.efficiencyPercent,
+      'approxRegulationPercent': result?.approxRegulationPercent,
+      'overallStatus': result?.status.label,
+    };
   }
 
   Widget _resultSection(TransformerDesignResult? result) {
@@ -373,8 +417,32 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
       productFamilies: _repo.productFamilies,
       internalProtectionDatabase: _repo.internalProtection,
     );
-    return SectionCard(
-      title: 'Integrated protection preview',
+    return EngineeringHelpScope(
+      values: <String, Object?>{
+        ..._helpValues(transformerResult),
+        'mvFaultCurrentKa': 20.0,
+        'mvFaultDurationS': 3.0,
+        'preferredMvDevice': protection.preferredMvDevice,
+        'vcbRatedVoltageKv': protection.vcbRatedVoltageKv,
+        'vcbRatedCurrentA': protection.vcbRatedCurrentA,
+        'vcbBreakingCurrentKa': protection.vcbBreakingCurrentKa,
+        'fuseCurrentA': protection.fuseCurrentA,
+        'acbFrameA': protection.acbFrameA,
+        'acbSensorA': protection.acbSensorA,
+        'acbBreakingCurrentKa': protection.acbBreakingCurrentKa,
+        'ctRatio': protection.ctRatio,
+        'acbPoles': protection.acbPoles,
+        'acbShortTimeWithstandKa': protection.acbShortTimeWithstandKa,
+        'longTimePickupA': protection.longTimePickupA,
+        'shortTimePickupA': protection.shortTimePickupA,
+        'shortTimeDelayS': protection.shortTimeDelayS,
+        'instantaneousPickupA': protection.instantaneousPickupA,
+        'groundFaultPickupA': protection.groundFaultPickupA,
+        'groundFaultDelayS': protection.groundFaultDelayS,
+        'protectionStatus': protection.status.label,
+      },
+      child: SectionCard(
+        title: 'Integrated protection preview',
       subtitle: 'Default 20 kA / 3 s MV duty — use the Protection page for project inputs',
       trailing: const HelperButton(
         topicId: 'protection_status',
@@ -410,7 +478,8 @@ class _TransformerDesignScreenState extends State<TransformerDesignScreen> {
           const Text(
             'This preview deliberately remains VERIFY. Confirm actual TNB/utility fault data, exact product ratings, CT performance, transformer inrush, relay curves and ACB discrimination in the dedicated workflow.',
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

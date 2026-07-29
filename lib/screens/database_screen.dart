@@ -73,8 +73,16 @@ class _DatabaseScreenState extends State<DatabaseScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
+    return EngineeringHelpScope(
+      values: <String, Object?>{
+        'searchQuery': _search.text.trim(),
+        'cableRecordCount': _repo.cables.length,
+        'transformerRecordCount': _repo.transformers.length,
+        'protectionRecordCount': _repo.protectionDevices.length,
+        'dataStatus': 'Controlled database loaded',
+      },
+      child: Column(
+        children: [
         const Padding(
           padding: EdgeInsets.fromLTRB(18, 18, 18, 0),
           child: PageHeader(
@@ -88,7 +96,7 @@ class _DatabaseScreenState extends State<DatabaseScreen>
           padding: const EdgeInsets.fromLTRB(18, 16, 18, 12),
           child: LabeledField(
             label: 'Search database',
-            topicId: 'data_status',
+            topicId: 'database_search',
             child: TextField(
               controller: _search,
               decoration: const InputDecoration(
@@ -110,17 +118,18 @@ class _DatabaseScreenState extends State<DatabaseScreen>
             Tab(text: 'Protection', icon: Icon(Icons.security_outlined)),
           ],
         ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              _cableTab(),
-              _transformerTab(),
-              _protectionTab(),
-            ],
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _cableTab(),
+                _transformerTab(),
+                _protectionTab(),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -145,6 +154,17 @@ class _DatabaseScreenState extends State<DatabaseScreen>
     }).toList();
 
     return _databaseTab(
+      scrollKey: 'mv-cable-database',
+      helpValues: <String, Object?>{
+        'selectedDatabase': 'MV cables',
+        'searchQuery': _search.text.trim(),
+        'selectedBrand': _cableBrand,
+        'selectedFamily': _cableFamily,
+        'selectedCores': _cableCore,
+        'selectedMaterial': _cableMaterial,
+        'matchedRecordCount': records.length,
+        'dataStatus': '${records.length} MV cable records matched',
+      },
       filters: [
         _filterField(
           label: 'Brand',
@@ -206,6 +226,15 @@ class _DatabaseScreenState extends State<DatabaseScreen>
     }).toList();
 
     return _databaseTab(
+      scrollKey: 'transformer-database',
+      helpValues: <String, Object?>{
+        'selectedDatabase': 'Transformers',
+        'searchQuery': _search.text.trim(),
+        'selectedBrand': _txBrand,
+        'selectedTransformerType': _txType,
+        'matchedRecordCount': records.length,
+        'dataStatus': '${records.length} transformer records matched',
+      },
       filters: [
         _filterField(
           label: 'Brand',
@@ -258,6 +287,15 @@ class _DatabaseScreenState extends State<DatabaseScreen>
     }).toList();
 
     return _databaseTab(
+      scrollKey: 'protection-database',
+      helpValues: <String, Object?>{
+        'selectedDatabase': 'Protection',
+        'searchQuery': _search.text.trim(),
+        'selectedBrand': _protectionBrand,
+        'selectedProtectionCategory': _protectionCategory,
+        'matchedRecordCount': records.length,
+        'dataStatus': '${records.length} protection records matched',
+      },
       filters: [
         _filterField(
           label: 'Brand',
@@ -268,7 +306,7 @@ class _DatabaseScreenState extends State<DatabaseScreen>
         ),
         _filterField(
           label: 'Protection category',
-          topicId: 'protection_status',
+          topicId: 'protection_category',
           value: _protectionCategory,
           values: ['All categories', ..._repo.protectionCategories],
           onChanged: (value) => setState(() => _protectionCategory = value),
@@ -296,43 +334,63 @@ class _DatabaseScreenState extends State<DatabaseScreen>
   }
 
   Widget _databaseTab<T>({
+    required String scrollKey,
+    required Map<String, Object?> helpValues,
     required List<Widget> filters,
     required List<T> records,
     required Widget Function(T record) itemBuilder,
   }) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(18, 16, 18, 12),
-          child: SectionCard(
-            title: 'Database filters',
-            subtitle: 'Input controls use the question-mark helper convention',
-            icon: Icons.filter_alt_outlined,
-            child: ResponsiveGrid(
-              minItemWidth: 145,
-              children: filters,
+    return EngineeringHelpScope(
+      values: helpValues,
+      child: CustomScrollView(
+        key: PageStorageKey<String>(scrollKey),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(18, 16, 18, 12),
+            sliver: SliverToBoxAdapter(
+              child: SectionCard(
+                title: 'Database filters',
+                subtitle:
+                    'Scroll the complete page to reach every filter and matching record',
+                icon: Icons.filter_alt_outlined,
+                child: ResponsiveGrid(
+                  minItemWidth: 145,
+                  children: filters,
+                ),
+              ),
             ),
           ),
-        ),
-        Expanded(
-          child: records.isEmpty
-              ? const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(24),
-                    child: Text(
-                      'No records match the current search and filters.',
-                      textAlign: TextAlign.center,
-                    ),
+          if (records.isEmpty)
+            const SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text(
+                    'No records match the current search and filters.',
+                    textAlign: TextAlign.center,
                   ),
-                )
-              : ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
-                  itemCount: records.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 10),
-                  itemBuilder: (context, index) => itemBuilder(records[index]),
                 ),
-        ),
-      ],
+              ),
+            )
+          else
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(18, 0, 18, 24),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    if (index.isOdd) {
+                      return const SizedBox(height: 10);
+                    }
+                    return itemBuilder(records[index ~/ 2]);
+                  },
+                  childCount: records.length * 2 - 1,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
@@ -564,7 +622,7 @@ class _RecordCard extends StatelessWidget {
                 height: 52,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF11C5D9), Color(0xFF2457E6)],
+                    colors: [Color(0xFFC026D3), Color(0xFF7E22CE)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
