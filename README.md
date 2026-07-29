@@ -157,3 +157,7 @@ GitHub Actions workflows or another environment with the Flutter SDK.
 - Cleans the reported braces and const-constructor lints.
 - Adds regression gates for these source contracts.
 
+
+## Rev2 PDF constructor hotfix
+
+The coordinated PDF report no longer applies Dart `const` to `package:pdf/widgets.dart` constructors that are non-const in the pinned PDF package. This directly resolves the 12 `const_with_non_const` analyzer errors reported on Android and Windows. The project validator now rejects any reintroduction of `const pw.*` in `report_service.dart`.

@@ -25,23 +25,23 @@ class ReportService {
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
-        margin: const pw.EdgeInsets.all(30),
+        margin: pw.EdgeInsets.all(30),
         header: (context) => pw.Container(
-          padding: const pw.EdgeInsets.only(bottom: 10),
-          decoration: const pw.BoxDecoration(
+          padding: pw.EdgeInsets.only(bottom: 10),
+          decoration: pw.BoxDecoration(
             border: pw.Border(bottom: pw.BorderSide(color: PdfColor(0.7608, 0.0941, 0.3569), width: 2)),
           ),
           child: pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              const pw.Text(
+              pw.Text(
                 'AUTO MV CABLE & TX SIZING PRO',
                 style: pw.TextStyle(
                   fontWeight: pw.FontWeight.bold,
                   color: PdfColor(0.5333, 0.0549, 0.3098),
                 ),
               ),
-              const pw.Text('MVTX-CALC-V1'),
+              pw.Text('MVTX-CALC-V1'),
             ],
           ),
         ),
@@ -50,23 +50,23 @@ class ReportService {
           child: pw.Text('Page ${context.pageNumber} of ${context.pagesCount}'),
         ),
         build: (context) => [
-          const pw.SizedBox(height: 12),
-          const pw.Text(
+          pw.SizedBox(height: 12),
+          pw.Text(
             'Coordinated MV Cable and Transformer Preliminary Design',
             style: pw.TextStyle(
               fontSize: 20,
               fontWeight: pw.FontWeight.bold,
             ),
           ),
-          const pw.SizedBox(height: 8),
-          const pw.Container(
+          pw.SizedBox(height: 8),
+          pw.Container(
             padding: pw.EdgeInsets.all(10),
             color: PdfColor(1.0, 0.9176, 0.9529),
             child: pw.Text(
               'Engineering design aid only. Verify exact manufacturer data, utility fault level, cable screen bonding, protection clearing time, TNB/ST requirements and project-specific studies before final issue.',
             ),
           ),
-          const pw.SizedBox(height: 16),
+          pw.SizedBox(height: 16),
           _heading('Transformer selection'),
           _table([
             ['Selected transformer', transformer.transformer.shortLabel],
@@ -76,7 +76,7 @@ class ReportService {
             ['Approx. LV terminal fault', '${transformer.approxFaultCurrentKa.toStringAsFixed(2)} kA'],
             ['Status', transformer.status.label],
           ]),
-          const pw.SizedBox(height: 16),
+          pw.SizedBox(height: 16),
           _heading('MV cable selection'),
           _table([
             ['Selected cable', cable.cable.shortLabel],
@@ -88,7 +88,7 @@ class ReportService {
             ['Charging current', '${cable.chargingCurrentA.toStringAsFixed(3)} A'],
             ['Status', cable.status.label],
           ]),
-          const pw.SizedBox(height: 16),
+          pw.SizedBox(height: 16),
           _heading('Protection and switchgear selection'),
           _table([
             ['Preferred MV protection', protection.preferredMvDevice],
@@ -101,10 +101,10 @@ class ReportService {
             ['ACB instantaneous', protection.instantaneousPickupA == null ? 'OFF / project review' : '${protection.instantaneousPickupA!.toStringAsFixed(0)} A'],
             ['Protection status', protection.status.label],
           ]),
-          const pw.SizedBox(height: 10),
+          pw.SizedBox(height: 10),
           _heading('Recommended relay functions'),
           ...protection.relayFunctions.map((item) => pw.Bullet(text: item)),
-          const pw.SizedBox(height: 16),
+          pw.SizedBox(height: 16),
           _heading('Required verification'),
           pw.Bullet(text: 'Exact manufacturer cable and transformer datasheets or nameplates.'),
           pw.Bullet(text: 'IEC 60287 current-rating study and project installation conditions.'),
@@ -137,7 +137,7 @@ class ReportService {
 
   static pw.Widget _heading(String text) => pw.Text(
         text,
-        style: const pw.TextStyle(
+        style: pw.TextStyle(
           fontSize: 14,
           fontWeight: pw.FontWeight.bold,
           color: PdfColor(0.7608, 0.0941, 0.3569),
@@ -147,15 +147,15 @@ class ReportService {
   static pw.Widget _table(List<List<String>> rows) => pw.TableHelper.fromTextArray(
         headers: const ['Item', 'Value'],
         data: rows,
-        headerStyle: const pw.TextStyle(
+        headerStyle: pw.TextStyle(
           fontWeight: pw.FontWeight.bold,
           color: PdfColors.white,
         ),
-        headerDecoration: const pw.BoxDecoration(color: PdfColor(0.7608, 0.0941, 0.3569)),
-        cellPadding: const pw.EdgeInsets.all(7),
+        headerDecoration: pw.BoxDecoration(color: PdfColor(0.7608, 0.0941, 0.3569)),
+        cellPadding: pw.EdgeInsets.all(7),
         columnWidths: {
-          0: const pw.FlexColumnWidth(1.2),
-          1: const pw.FlexColumnWidth(2.2),
+          0: pw.FlexColumnWidth(1.2),
+          1: pw.FlexColumnWidth(2.2),
         },
       );
 }

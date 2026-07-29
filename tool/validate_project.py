@@ -418,10 +418,11 @@ check(single_line_if.search(all_dart_text) is None,
 for term in [
     "const Padding(\n          padding: EdgeInsets.fromLTRB(18, 18, 18, 0)",
     "trailing: const HelperButton(\n        topicId: 'protection_status'",
-    "const pw.Text('MVTX-CALC-V1')",
-    "const pw.Container(\n            padding: pw.EdgeInsets.all(10)",
 ]:
     check(term in all_dart_text, f"Reported const-constructor cleanup missing: {term}")
+
+check("const pw." not in report_text,
+      "Invalid const pdf/widget constructor remains in report_service.dart")
 
 # Resolve local Dart imports.
 for dart in ROOT.glob("lib/**/*.dart"):
