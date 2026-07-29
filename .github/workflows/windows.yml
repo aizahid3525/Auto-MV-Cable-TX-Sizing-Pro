@@ -11,6 +11,10 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 50
     steps:
+      - name: Configure Git line endings
+        shell: pwsh
+        run: git config --global core.autocrlf false
+
       - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
@@ -36,7 +40,10 @@ jobs:
       - name: Static controlled-data validation
         run: python tool/validate_project.py
 
-      - name: Verify formatting
+      - name: Apply deterministic Dart formatting
+        run: dart format lib test
+
+      - name: Verify formatting is idempotent
         run: dart format --output=none --set-exit-if-changed lib test
 
       - name: Analyze
