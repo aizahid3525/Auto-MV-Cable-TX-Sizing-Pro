@@ -18,6 +18,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
+    expect(tester.takeException(), isNull);
     expect(find.text('Auto MV Cable & TX Sizing Pro'), findsWidgets);
     expect(find.text('MV Cable Design'), findsOneWidget);
     expect(find.text('Transformer Design'), findsOneWidget);

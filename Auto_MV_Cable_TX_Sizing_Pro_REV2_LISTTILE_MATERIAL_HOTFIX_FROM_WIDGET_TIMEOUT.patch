@@ -1,0 +1,110 @@
+diff --git a/README.md b/README.md
+index dec2f0a7ed0fcbc986068a67b426347fb9b2fb84..b893cc49afd386aa4db178ba90fe01be24531e15 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,7 @@
+ # Auto MV Cable & TX Sizing Pro
+ 
++> Rev2 hotfix: ListTile Material ancestry corrected for deterministic Android and Windows widget tests.
++
+ **Android and Windows Flutter engineering design aid** for MV cables,
+ transformers, coordinated feeder design, and preliminary transformer
+ protection/switchgear selection.
+diff --git a/lib/widgets/common_widgets.dart b/lib/widgets/common_widgets.dart
+index 0826d6e0ff446cf157e9c2387dd27beb82ab4484..9db17fbb9f5e4b7b07a508fdd3b0f6cd00eb3106 100644
+--- a/lib/widgets/common_widgets.dart
++++ b/lib/widgets/common_widgets.dart
+@@ -84,16 +84,18 @@ class SectionCard extends StatelessWidget {
+   @override
+   Widget build(BuildContext context) {
+     final colors = Theme.of(context).colorScheme;
+-    return Container(
+-      padding: const EdgeInsets.all(18),
+-      decoration: BoxDecoration(
+-        color: colors.surface,
++    return Material(
++      color: colors.surface,
++      shape: RoundedRectangleBorder(
+         borderRadius: BorderRadius.circular(20),
+-        border: Border.all(color: colors.outlineVariant),
++        side: BorderSide(color: colors.outlineVariant),
+       ),
+-      child: Column(
+-        crossAxisAlignment: CrossAxisAlignment.start,
+-        children: [
++      clipBehavior: Clip.antiAlias,
++      child: Padding(
++        padding: const EdgeInsets.all(18),
++        child: Column(
++          crossAxisAlignment: CrossAxisAlignment.start,
++          children: [
+           Row(
+             children: [
+               Expanded(
+@@ -120,8 +122,9 @@ class SectionCard extends StatelessWidget {
+             ],
+           ),
+           const SizedBox(height: 16),
+-          child,
+-        ],
++            child,
++          ],
++        ),
+       ),
+     );
+   }
+diff --git a/test/widget_test.dart b/test/widget_test.dart
+index 41d3c0e62e6147e25e94e18a95d0ec5b1b58d01f..f38b89032ee1d36de0933bf535bb5182aa8026b5 100644
+--- a/test/widget_test.dart
++++ b/test/widget_test.dart
+@@ -18,6 +18,7 @@ void main() {
+     await tester.pump();
+     await tester.pump(const Duration(milliseconds: 100));
+ 
++    expect(tester.takeException(), isNull);
+     expect(find.text('Auto MV Cable & TX Sizing Pro'), findsWidgets);
+     expect(find.text('MV Cable Design'), findsOneWidget);
+     expect(find.text('Transformer Design'), findsOneWidget);
+diff --git a/tool/validate_project.py b/tool/validate_project.py
+index 1282222bb5e9141f33a3874f65af2ce3dc3e3637..cd1c0ad461411fdc3c4f8c66444d0ee4f967659a 100644
+--- a/tool/validate_project.py
++++ b/tool/validate_project.py
+@@ -424,6 +424,29 @@ for term in [
+ check("const pw." not in report_text,
+       "Invalid const pdf/widget constructor remains in report_service.dart")
+ 
++# Material ancestry safeguard for ListTile-based controls. SectionCard may host
++# SwitchListTile/ListTile children, so its coloured surface must itself be a
++# Material rather than an intermediate decorated Container.
++common_widgets_text = (ROOT / "lib/widgets/common_widgets.dart").read_text(
++    encoding="utf-8"
++)
++section_card_match = re.search(
++    r"class SectionCard.*?class HelperButton",
++    common_widgets_text,
++    re.DOTALL,
++)
++check(section_card_match is not None, "SectionCard implementation missing")
++if section_card_match is not None:
++    section_card_text = section_card_match.group(0)
++    check("return Material(" in section_card_text,
++          "SectionCard must provide a Material ancestor")
++    check("shape: RoundedRectangleBorder(" in section_card_text,
++          "SectionCard Material shape/border contract missing")
++    check("clipBehavior: Clip.antiAlias" in section_card_text,
++          "SectionCard Material clipping contract missing")
++    check("return Container(" not in section_card_text,
++          "SectionCard must not use a coloured DecoratedBox around ListTiles")
++
+ # Resolve local Dart imports.
+ for dart in ROOT.glob("lib/**/*.dart"):
+     text = dart.read_text(encoding="utf-8")
+@@ -499,6 +522,8 @@ if widget_test_path.exists():
+           "Dashboard widget test must preload the controlled repository")
+     check("tester.pump(const Duration(milliseconds: 100))" in widget_test,
+           "Dashboard widget test must use bounded deterministic pumping")
++    check("expect(tester.takeException(), isNull)" in widget_test,
++          "Dashboard widget test must assert that no framework exception occurred")
+ 
+ # Workflow and docs contracts.
+ for workflow in [".github/workflows/android.yml", ".github/workflows/windows.yml"]:

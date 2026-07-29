@@ -1,5 +1,7 @@
 # Auto MV Cable & TX Sizing Pro
 
+> Rev2 hotfix: ListTile Material ancestry corrected for deterministic Android and Windows widget tests.
+
 **Android and Windows Flutter engineering design aid** for MV cables,
 transformers, coordinated feeder design, and preliminary transformer
 protection/switchgear selection.

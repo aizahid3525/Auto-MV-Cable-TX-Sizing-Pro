@@ -424,6 +424,29 @@ for term in [
 check("const pw." not in report_text,
       "Invalid const pdf/widget constructor remains in report_service.dart")
 
+# Material ancestry safeguard for ListTile-based controls. SectionCard may host
+# SwitchListTile/ListTile children, so its coloured surface must itself be a
+# Material rather than an intermediate decorated Container.
+common_widgets_text = (ROOT / "lib/widgets/common_widgets.dart").read_text(
+    encoding="utf-8"
+)
+section_card_match = re.search(
+    r"class SectionCard.*?class HelperButton",
+    common_widgets_text,
+    re.DOTALL,
+)
+check(section_card_match is not None, "SectionCard implementation missing")
+if section_card_match is not None:
+    section_card_text = section_card_match.group(0)
+    check("return Material(" in section_card_text,
+          "SectionCard must provide a Material ancestor")
+    check("shape: RoundedRectangleBorder(" in section_card_text,
+          "SectionCard Material shape/border contract missing")
+    check("clipBehavior: Clip.antiAlias" in section_card_text,
+          "SectionCard Material clipping contract missing")
+    check("return Container(" not in section_card_text,
+          "SectionCard must not use a coloured DecoratedBox around ListTiles")
+
 # Resolve local Dart imports.
 for dart in ROOT.glob("lib/**/*.dart"):
     text = dart.read_text(encoding="utf-8")
@@ -499,6 +522,8 @@ if widget_test_path.exists():
           "Dashboard widget test must preload the controlled repository")
     check("tester.pump(const Duration(milliseconds: 100))" in widget_test,
           "Dashboard widget test must use bounded deterministic pumping")
+    check("expect(tester.takeException(), isNull)" in widget_test,
+          "Dashboard widget test must assert that no framework exception occurred")
 
 # Workflow and docs contracts.
 for workflow in [".github/workflows/android.yml", ".github/workflows/windows.yml"]:
