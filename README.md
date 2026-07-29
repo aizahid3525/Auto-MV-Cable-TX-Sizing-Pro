@@ -159,3 +159,12 @@ GitHub Actions workflows or another environment with the Flutter SDK.
 - Cleans the reported braces and const-constructor lints.
 - Adds regression gates for these source contracts.
 
+## Android manifest XML hotfix
+
+- Android now references `@string/app_name` from `AndroidManifest.xml`.
+- The ampersand in **Auto MV Cable & TX Sizing Pro** is written by Python's
+  XML API to `strings.xml`, which serialises it safely as `&amp;`.
+- `tool/configure_platforms.py` parses both generated XML files before the
+  workflow proceeds, so malformed platform identity files fail immediately.
+- `tool/validate_project.py` independently verifies the generated manifest
+  label and exact application-name string when the Android wrapper exists.
