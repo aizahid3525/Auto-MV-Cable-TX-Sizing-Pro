@@ -35,6 +35,9 @@ jobs:
       - name: Generate launcher icons
         run: dart run flutter_launcher_icons
 
+      - name: Verify validator has no third-party Python imports
+        run: python -m py_compile tool/validate_project.py
+
       - name: Static controlled-data validation
         run: python tool/validate_project.py
 
