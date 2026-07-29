@@ -68,3 +68,4 @@ jobs:
             build/Auto_MV_Cable_TX_Sizing_Pro_Windows_Portable.zip
             build/symbols/windows
           if-no-files-found: error
+          
