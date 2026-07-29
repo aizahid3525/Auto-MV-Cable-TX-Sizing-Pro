@@ -1,0 +1,44 @@
+name: auto_mv_cable_tx_sizing_pro
+description: MV cable and transformer engineering design aid for Android and Windows.
+publish_to: 'none'
+version: 1.1.0+2
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  shared_preferences: ^2.5.3
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/app_icon_512.png
+    - assets/icons/app_icon_1024.png
+    - assets/data/mv_cable_database.json
+    - assets/data/transformer_database.json
+    - assets/data/standards_register.json
+    - assets/data/help_content.json
+    - assets/data/manufacturer_sources.json
+    - assets/data/regression_vectors.json
+    - assets/data/data_manifest.json
+    - assets/data/protection_database.json
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path_android: assets/icons/app_icon_512.png
+  adaptive_icon_background: '#C2185B'
+  adaptive_icon_foreground: assets/icons/adaptive_foreground.png
+  min_sdk_android: 24

@@ -1,0 +1,78 @@
+{
+  "schema": "MVTX-REGRESSION-V1",
+  "recordCount": 8,
+  "records": [
+    {
+      "ID": "MV-CURRENT-001",
+      "Description": "1000 kVA at 11 kV",
+      "Input JSON": "{\"kva\": 1000, \"kv\": 11}",
+      "Expected JSON": "{\"currentA\": 52.49}",
+      "Tolerance": 0.05,
+      "Independent formula": "kVA / (√3 × kV)",
+      "Result": "PASS — validated by static script"
+    },
+    {
+      "ID": "TX-FLA-001",
+      "Description": "1000 kVA 415 V secondary",
+      "Input JSON": "{\"kva\": 1000, \"kv\": 0.415}",
+      "Expected JSON": "{\"currentA\": 1391.22}",
+      "Tolerance": 0.2,
+      "Independent formula": "kVA / (√3 × kV)",
+      "Result": "PASS — validated by static script"
+    },
+    {
+      "ID": "TX-FAULT-001",
+      "Description": "1000 kVA 415 V 6% Z",
+      "Input JSON": "{\"kva\": 1000, \"kv\": 0.415, \"zPercent\": 6}",
+      "Expected JSON": "{\"faultKa\": 23.19}",
+      "Tolerance": 0.05,
+      "Independent formula": "[kVA / (√3 × kV)] / (Z% / 100) / 1000",
+      "Result": "PASS — validated by static script"
+    },
+    {
+      "ID": "SC-CU-001",
+      "Description": "240 mm2 Cu XLPE 1s",
+      "Input JSON": "{\"sizeMm2\": 240, \"k\": 143, \"timeS\": 1}",
+      "Expected JSON": "{\"withstandKa\": 34.32}",
+      "Tolerance": 0.02,
+      "Independent formula": "k × S / √t / 1000",
+      "Result": "PASS — validated by static script"
+    },
+    {
+      "ID": "SC-AL-001",
+      "Description": "240 mm2 Al XLPE 1s",
+      "Input JSON": "{\"sizeMm2\": 240, \"k\": 94, \"timeS\": 1}",
+      "Expected JSON": "{\"withstandKa\": 22.56}",
+      "Tolerance": 0.02,
+      "Independent formula": "k × S / √t / 1000",
+      "Result": "PASS — validated by static script"
+    },
+    {
+      "ID": "PROT-CT-001",
+      "Description": "CT ratio selects next standard above full-load / utilisation target",
+      "Input JSON": "{\"fullLoadA\":52.4864,\"target\":0.8}",
+      "Expected JSON": "{\"ctPrimaryA\":75}",
+      "Tolerance": 0,
+      "Independent formula": "nextStandard(I/target)",
+      "Result": "PASS — validated by static script"
+    },
+    {
+      "ID": "PROT-ACB-001",
+      "Description": "1000 kVA 415 V transformer selects 1600 A ACB frame",
+      "Input JSON": "{\"kva\":1000,\"kv\":0.415}",
+      "Expected JSON": "{\"fullLoadA\":1391.2055,\"frameA\":1600}",
+      "Tolerance": 0.001,
+      "Independent formula": "I=kVA/(sqrt(3)*kV); next frame",
+      "Result": "PASS — validated by static script"
+    },
+    {
+      "ID": "PROT-VCB-001",
+      "Description": "11 kV system selects 12 kV VCB voltage class",
+      "Input JSON": "{\"systemKv\":11}",
+      "Expected JSON": "{\"ratedVoltageKv\":12}",
+      "Tolerance": 0,
+      "Independent formula": "next standard voltage >= Um screening",
+      "Result": "PASS — validated by static script"
+    }
+  ]
+}

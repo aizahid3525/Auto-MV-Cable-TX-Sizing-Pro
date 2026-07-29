@@ -1,0 +1,125 @@
+{
+  "schema": "MVTX-STANDARDS-V1",
+  "recordCount": 17,
+  "records": [
+    {
+      "ID": "IEC-60502-2",
+      "Title": "IEC 60502-2:2014+AMD1:2024 CSV, corrected 2026-07",
+      "Scope": "Construction, dimensions and tests for extruded MV cables from 6 kV to 30 kV (Um 36 kV).",
+      "Status": "Current consolidated/corrected reference",
+      "Official URL": "https://webstore.iec.ch/en/publication/95394"
+    },
+    {
+      "ID": "MS-IEC-60502-2",
+      "Title": "MS IEC 60502-2:2024",
+      "Scope": "Malaysian adoption of IEC 60502-2:2014 for MV power cables.",
+      "Status": "Published Malaysian Standard",
+      "Official URL": "https://www.jsm.gov.my/announcement/788-kelulusan-malaysian-standards-ms-bil-7-2024"
+    },
+    {
+      "ID": "IEC-60287-1-1",
+      "Title": "IEC 60287-1-1:2023",
+      "Scope": "Steady-state cable current-rating equations and losses.",
+      "Status": "Current",
+      "Official URL": "https://webstore.iec.ch/en/publication/68118"
+    },
+    {
+      "ID": "IEC-60949",
+      "Title": "IEC 60949",
+      "Scope": "Thermally permissible short-circuit currents in cables.",
+      "Status": "Reference; confirm current edition/licence",
+      "Official URL": "https://webstore.iec.ch/"
+    },
+    {
+      "ID": "IEC-60076-1",
+      "Title": "IEC 60076-1:2011",
+      "Scope": "General requirements for power transformers.",
+      "Status": "Current, stability date 2028",
+      "Official URL": "https://webstore.iec.ch/en/publication/588"
+    },
+    {
+      "ID": "IEC-60076-11",
+      "Title": "IEC 60076-11",
+      "Scope": "Dry-type power transformers.",
+      "Status": "Reference; confirm current edition/licence",
+      "Official URL": "https://webstore.iec.ch/"
+    },
+    {
+      "ID": "IEC-60909-0",
+      "Title": "IEC 60909-0:2026",
+      "Scope": "Calculation of short-circuit currents in LV and HV three-phase AC systems.",
+      "Status": "Current edition published 2026-07-23",
+      "Official URL": "https://webstore.iec.ch/en/publication/68454"
+    },
+    {
+      "ID": "IEC-61936-1",
+      "Title": "IEC 61936-1",
+      "Scope": "Power installations exceeding 1 kV AC.",
+      "Status": "Reference; confirm current edition/licence",
+      "Official URL": "https://webstore.iec.ch/"
+    },
+    {
+      "ID": "IEC-62271",
+      "Title": "IEC 62271 series",
+      "Scope": "High-voltage switchgear and controlgear.",
+      "Status": "Reference series",
+      "Official URL": "https://webstore.iec.ch/"
+    },
+    {
+      "ID": "TNB-ESAH",
+      "Title": "TNB Electricity Supply Application Handbook / ESAH",
+      "Scope": "Malaysia supply voltages, system earthing, short-circuit ratings, supply application and metering requirements.",
+      "Status": "Live TNB web guidance; confirm project-specific revision",
+      "Official URL": "https://www.tnb.com.my/esah/supply-application"
+    },
+    {
+      "ID": "ST-LAW",
+      "Title": "Electricity Supply Act 1990 and Electricity Regulations 1994",
+      "Scope": "Malaysia statutory electrical safety and competent-person framework.",
+      "Status": "Applicable legislation; verify latest amendments",
+      "Official URL": "https://www.st.gov.my/ms/tentang-kami/perundangan"
+    },
+    {
+      "ID": "IEEE-525",
+      "Title": "IEEE 525-2025",
+      "Scope": "Guide for the design and installation of cable systems in substations.",
+      "Status": "Supplementary IEEE reference",
+      "Official URL": "https://standards.ieee.org/ieee/525/7274/"
+    },
+    {
+      "ID": "IEC-62271-100",
+      "Title": "IEC 62271-100:2021+AMD1:2024 CSV",
+      "Scope": "Three-phase AC circuit-breakers above 1 kV for indoor or outdoor installation.",
+      "Status": "Current consolidated version; stability date 2028",
+      "Official URL": "https://webstore.iec.ch/en/publication/99635"
+    },
+    {
+      "ID": "IEC-60282-1",
+      "Title": "IEC 60282-1:2020",
+      "Scope": "High-voltage current-limiting fuses above 1 kV.",
+      "Status": "Current; stability date 2030",
+      "Official URL": "https://webstore.iec.ch/en/publication/59817"
+    },
+    {
+      "ID": "IEC-60947-2",
+      "Title": "IEC 60947-2:2024",
+      "Scope": "Low-voltage circuit-breakers up to 1,000 V AC or 1,500 V DC.",
+      "Status": "Current sixth edition",
+      "Official URL": "https://webstore.iec.ch/en/publication/66277"
+    },
+    {
+      "ID": "IEC-61869-2",
+      "Title": "IEC 61869-2",
+      "Scope": "Additional requirements for current transformers.",
+      "Status": "Reference — confirm contractual edition",
+      "Official URL": "https://webstore.iec.ch/"
+    },
+    {
+      "ID": "IEC-60255",
+      "Title": "IEC 60255 series",
+      "Scope": "Measuring relays and protection equipment.",
+      "Status": "Reference series — confirm applicable parts",
+      "Official URL": "https://webstore.iec.ch/"
+    }
+  ]
+}

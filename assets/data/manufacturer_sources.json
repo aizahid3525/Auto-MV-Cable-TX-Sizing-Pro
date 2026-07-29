@@ -1,0 +1,238 @@
+{
+  "schema": "MVTX-SOURCES-V1",
+  "recordCount": 29,
+  "records": [
+    {
+      "Category": "Cable manufacturer",
+      "Brand / ID": "TCI",
+      "Name / title": "Tenaga Cable Industries (TCI)",
+      "Verified public scope": "Single Core XLPE — IEC 60502-2 / BS 6622; Three Core XLPE — IEC 60502-2 / BS 6622; Triplex XLPE — TNB specification",
+      "Official URL": "https://www.tcisb.com.my/",
+      "Status / notes": "Official manufacturer product pages; family verified: True"
+    },
+    {
+      "Category": "Cable manufacturer",
+      "Brand / ID": "Leader Cable",
+      "Name / title": "Leader Cable",
+      "Verified public scope": "XLPE Insulated Single Core; XLPE Insulated Three Core",
+      "Official URL": "https://leadercable.com.my/product-xlpe/",
+      "Status / notes": "Official manufacturer XLPE product page; family verified: True"
+    },
+    {
+      "Category": "Cable manufacturer",
+      "Brand / ID": "Southern Cable",
+      "Name / title": "Southern Cable",
+      "Verified public scope": "Medium Voltage Power Cable up to 33 kV",
+      "Official URL": "https://www.southerncable.com.my/product/",
+      "Status / notes": "Official manufacturer product page; family verified: True"
+    },
+    {
+      "Category": "Cable manufacturer",
+      "Brand / ID": "Tai Sin",
+      "Name / title": "Tai Sin Electric Cables (Malaysia)",
+      "Verified public scope": "MV XLPE Armoured — BS 6622; MV XLPE Armoured LSZH — BS 7835; MV XLPE — IEC 60502-2",
+      "Official URL": "https://www.taisin.com.my/our-products/",
+      "Status / notes": "Official manufacturer MV product page; family verified: True"
+    },
+    {
+      "Category": "Cable manufacturer",
+      "Brand / ID": "Federal Power",
+      "Name / title": "Federal Power",
+      "Verified public scope": "Medium Voltage Underground Cable up to 33 kV",
+      "Official URL": "https://www.federalpower.com.my/showproducts/productid/3612007/cid/374280/medium-voltage-power-cables/",
+      "Status / notes": "Official manufacturer product page; family verified: True"
+    },
+    {
+      "Category": "Cable manufacturer",
+      "Brand / ID": "Universal Cable",
+      "Name / title": "Universal Cable (M)",
+      "Verified public scope": "MV XLPE Power Cable — catalogue confirmation required",
+      "Official URL": "https://www.ucable.com.my/overview.html",
+      "Status / notes": "Official manufacturer overview; exact family/rating requires current catalogue; family verified: False"
+    },
+    {
+      "Category": "Transformer manufacturer",
+      "Brand / ID": "MTM",
+      "Name / title": "Malaysia Transformer Manufacturing (MTM)",
+      "Verified public scope": "Distribution transformers 100–3000 kVA up to 33 kV; broader portfolio to 90 MVA / 150 kV.",
+      "Official URL": "https://www.mtmsb.com/all-services/",
+      "Status / notes": "Types: Oil Immersed; Dry Type; Power Transformer; Earthing Transformer"
+    },
+    {
+      "Category": "Transformer manufacturer",
+      "Brand / ID": "EWT",
+      "Name / title": "EWT Transformer",
+      "Verified public scope": "Oil immersed distribution transformers 100–3000 kVA up to 36 kV AC.",
+      "Official URL": "https://www.ewt.com.my/company.php",
+      "Status / notes": "Types: Oil Immersed; Cast Resin; Compact Substation; Earthing Transformer"
+    },
+    {
+      "Category": "Transformer manufacturer",
+      "Brand / ID": "Schneider Electric",
+      "Name / title": "Schneider Electric Malaysia",
+      "Verified public scope": "Medium-voltage dry-type, oil and power transformer product ranges; exact local models to be verified.",
+      "Official URL": "https://www.se.com/my/en/product-category/3600-mediumvoltage-transformers/",
+      "Status / notes": "Types: Oil Immersed; Dry Type"
+    },
+    {
+      "Category": "Transformer manufacturer",
+      "Brand / ID": "WEG",
+      "Name / title": "WEG South East Asia",
+      "Verified public scope": "Dry-type transformer range with Malaysia regional office; exact ratings to be verified.",
+      "Official URL": "https://www.weg.net/catalog/weg/PH/en/Generation%2CTransmission-and-Distribution/Dry-Type-Transformers/c/GTD_TS",
+      "Status / notes": "Types: Dry Type; Oil Immersed"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-60502-2",
+      "Name / title": "IEC 60502-2:2014+AMD1:2024 CSV, corrected 2026-07",
+      "Verified public scope": "Construction, dimensions and tests for extruded MV cables from 6 kV to 30 kV (Um 36 kV).",
+      "Official URL": "https://webstore.iec.ch/en/publication/95394",
+      "Status / notes": "Current consolidated/corrected reference"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "MS-IEC-60502-2",
+      "Name / title": "MS IEC 60502-2:2024",
+      "Verified public scope": "Malaysian adoption of IEC 60502-2:2014 for MV power cables.",
+      "Official URL": "https://www.jsm.gov.my/announcement/788-kelulusan-malaysian-standards-ms-bil-7-2024",
+      "Status / notes": "Published Malaysian Standard"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-60287-1-1",
+      "Name / title": "IEC 60287-1-1:2023",
+      "Verified public scope": "Steady-state cable current-rating equations and losses.",
+      "Official URL": "https://webstore.iec.ch/en/publication/68118",
+      "Status / notes": "Current"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-60949",
+      "Name / title": "IEC 60949",
+      "Verified public scope": "Thermally permissible short-circuit currents in cables.",
+      "Official URL": "https://webstore.iec.ch/",
+      "Status / notes": "Reference; confirm current edition/licence"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-60076-1",
+      "Name / title": "IEC 60076-1:2011",
+      "Verified public scope": "General requirements for power transformers.",
+      "Official URL": "https://webstore.iec.ch/en/publication/588",
+      "Status / notes": "Current, stability date 2028"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-60076-11",
+      "Name / title": "IEC 60076-11",
+      "Verified public scope": "Dry-type power transformers.",
+      "Official URL": "https://webstore.iec.ch/",
+      "Status / notes": "Reference; confirm current edition/licence"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-60909-0",
+      "Name / title": "IEC 60909-0:2026",
+      "Verified public scope": "Calculation of short-circuit currents in LV and HV three-phase AC systems.",
+      "Official URL": "https://webstore.iec.ch/en/publication/68454",
+      "Status / notes": "Current edition published 2026-07-23"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-61936-1",
+      "Name / title": "IEC 61936-1",
+      "Verified public scope": "Power installations exceeding 1 kV AC.",
+      "Official URL": "https://webstore.iec.ch/",
+      "Status / notes": "Reference; confirm current edition/licence"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-62271",
+      "Name / title": "IEC 62271 series",
+      "Verified public scope": "High-voltage switchgear and controlgear.",
+      "Official URL": "https://webstore.iec.ch/",
+      "Status / notes": "Reference series"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "TNB-ESAH",
+      "Name / title": "TNB Electricity Supply Application Handbook / ESAH",
+      "Verified public scope": "Malaysia supply voltages, system earthing, short-circuit ratings, supply application and metering requirements.",
+      "Official URL": "https://www.tnb.com.my/esah/supply-application",
+      "Status / notes": "Live TNB web guidance; confirm project-specific revision"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "ST-LAW",
+      "Name / title": "Electricity Supply Act 1990 and Electricity Regulations 1994",
+      "Verified public scope": "Malaysia statutory electrical safety and competent-person framework.",
+      "Official URL": "https://www.st.gov.my/ms/tentang-kami/perundangan",
+      "Status / notes": "Applicable legislation; verify latest amendments"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEEE-525",
+      "Name / title": "IEEE 525-2025",
+      "Verified public scope": "Guide for the design and installation of cable systems in substations.",
+      "Official URL": "https://standards.ieee.org/ieee/525/7274/",
+      "Status / notes": "Supplementary IEEE reference"
+    },
+    {
+      "Category": "Protection manufacturer",
+      "Brand / ID": "Schneider Electric",
+      "Name / title": "EvoPacT / MCSeT / RM6 / MasterPact MTZ",
+      "Verified public scope": "MV VCB/switchgear/RMU and ACB product families",
+      "Official URL": "https://www.se.com/my/en/product-category/88025-switchgear-components/",
+      "Status / notes": "Official Malaysia product-family pages; exact models require verification"
+    },
+    {
+      "Category": "Protection manufacturer",
+      "Brand / ID": "ABB",
+      "Name / title": "VD4 / SACE Emax 2",
+      "Verified public scope": "MV VCB and LV ACB product families",
+      "Official URL": "https://www.abb.com/global/en/areas/electrification/medium-voltage/grid-components/primary-vacuum-circuit-breakers",
+      "Status / notes": "Official global product-family pages; verify Malaysia availability"
+    },
+    {
+      "Category": "Protection manufacturer",
+      "Brand / ID": "Siemens",
+      "Name / title": "SION / SENTRON 3WA",
+      "Verified public scope": "MV VCB and LV ACB product families",
+      "Official URL": "https://www.siemens.com/en-us/products/vacuum-switching-technology/sion-vacuum-circuit-breakers/",
+      "Status / notes": "Official product pages; exact configuration required"
+    },
+    {
+      "Category": "Protection manufacturer",
+      "Brand / ID": "Eaton",
+      "Name / title": "IZMX / INX",
+      "Verified public scope": "LV ACB product family up to 6300 A",
+      "Official URL": "https://www.eaton.com/gb/en-gb/catalog/electrical-circuit-protection/air-circuit-breaker---izmx-inx-series.html",
+      "Status / notes": "Official product-family page; verify Malaysia availability"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-62271-100",
+      "Name / title": "IEC 62271-100:2021+AMD1:2024 CSV",
+      "Verified public scope": "MV AC circuit breakers above 1 kV",
+      "Official URL": "https://webstore.iec.ch/en/publication/99635",
+      "Status / notes": "Current consolidated official IEC reference"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-60282-1",
+      "Name / title": "IEC 60282-1:2020",
+      "Verified public scope": "HV current-limiting fuses",
+      "Official URL": "https://webstore.iec.ch/en/publication/59817",
+      "Status / notes": "Current official IEC reference"
+    },
+    {
+      "Category": "Standard / requirement",
+      "Brand / ID": "IEC-60947-2",
+      "Name / title": "IEC 60947-2:2024",
+      "Verified public scope": "LV circuit-breakers",
+      "Official URL": "https://webstore.iec.ch/en/publication/66277",
+      "Status / notes": "Current official IEC reference"
+    }
+  ]
+}

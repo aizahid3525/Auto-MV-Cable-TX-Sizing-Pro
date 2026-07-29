@@ -1,0 +1,48 @@
+{
+  "schema": "MVTX-MANIFEST-V2",
+  "recordCount": 7,
+  "records": [
+    {
+      "File": "help_content.json",
+      "SHA-256": "8917ee86952c11443493d8c7697e732509250fd61815bd125f9dafc8f58a6cd8",
+      "Schema": "MVTX-HELP-V1",
+      "Generated on": "2026-07-29"
+    },
+    {
+      "File": "manufacturer_sources.json",
+      "SHA-256": "9902b1dc2707d7682fdcd10373d188137fd97e8ab95e49a46a4e938d983cdf34",
+      "Schema": "MVTX-SOURCES-V1",
+      "Generated on": "2026-07-29"
+    },
+    {
+      "File": "mv_cable_database.json",
+      "SHA-256": "33e7c30cabfac72ebcbe627fbe292fc81002f4c3f6f01439bf54c2f23dabf806",
+      "Schema": "MVTX-CABLE-DB-V1",
+      "Generated on": "2026-07-29"
+    },
+    {
+      "File": "protection_database.json",
+      "SHA-256": "50d699dd86d7c8232617bdba8a6d906aa9fbca04f92281e816b1a7b0dec4890f",
+      "Schema": "MVTX-PROTECTION-DB-V1",
+      "Generated on": "2026-07-29"
+    },
+    {
+      "File": "regression_vectors.json",
+      "SHA-256": "6acf99097004119a42c9e17a749009d32c969e39d610b074164fe91a64ac7a30",
+      "Schema": "MVTX-REGRESSION-V1",
+      "Generated on": "2026-07-29"
+    },
+    {
+      "File": "standards_register.json",
+      "SHA-256": "92919bb986da043f27bc51a7b187fabf1b82dbca5d1ca5722f313e7d2e4d72cc",
+      "Schema": "MVTX-STANDARDS-V1",
+      "Generated on": "2026-07-29"
+    },
+    {
+      "File": "transformer_database.json",
+      "SHA-256": "e4d386b50af7693b8cebb6f27e5b2c15b5e90f96a2c10ea022429bff43ffb2ae",
+      "Schema": "MVTX-TX-DB-V1",
+      "Generated on": "2026-07-29"
+    }
+  ]
+}
